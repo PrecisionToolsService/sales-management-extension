@@ -1,9 +1,9 @@
 {
-    "module": "{@name}",
-    "name": "{@nameLabel}",
-    "description": "{@description}",
-    "author": "{@author}",
-    "bundled": {@bundled},
+    "module": "Desktop-notification",
+    "name": "desktop-notification",
+    "description": "Extension to implement desktop notification on EspoCRM.",
+    "author": "Hiro Miyoshi",
+    "bundled": true,
     "acceptableVersions": [
         ">=7.3.0"
     ],

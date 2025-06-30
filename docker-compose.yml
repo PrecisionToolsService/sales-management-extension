@@ -1,0 +1,15 @@
+services:
+    dev:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: espocrm-ext-dev
+        working_dir: /app
+        volumes:
+            - ./site:/app
+        ports:
+            - "3001:3000" # npm dev-server用に必要なら
+        tty: true
+        dns:
+            - 8.8.8.8
+            - 1.1.1.1
