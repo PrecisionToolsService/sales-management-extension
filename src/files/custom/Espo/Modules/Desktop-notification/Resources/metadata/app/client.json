@@ -1,0 +1,38 @@
+{
+  "scriptList": [
+    "__APPEND__",
+    "https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js",
+    "client/custom/modules/desktop-notification/lib/init.js",
+    "client/custom/modules/desktop-notification/lib/module-desktop-notification.js"
+  ],
+  "developerModeScriptList": [
+    "__APPEND__",
+    "client/custom/modules/desktop-notification/src/main.js"
+  ],
+  "metaList": [
+    "__APPEND__",
+    {
+      "name": "theme-color",
+      "content": "#303030"
+    },
+    {
+      "name": "mobile-web-app-capable",
+      "content": "yes"
+    },
+    {
+      "name": "apple-mobile-web-app-capable",
+      "content": "yes"
+    }
+  ],
+  "linkList": [
+    "__APPEND__",
+    {
+      "rel": "manifest",
+      "href": "client/custom/modules/desktop-notification/others/admin-manifest.webmanifest"
+    },
+    {
+      "rel": "apple-touch-icon",
+      "href": "client/custom/modules/desktop-notification/icon/512x512.png"
+    }
+  ]
+}

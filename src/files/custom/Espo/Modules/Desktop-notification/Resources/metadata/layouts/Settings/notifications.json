@@ -1,0 +1,44 @@
+[
+    "__APPEND__",
+    {
+        "label": "desktop Notifications",
+        "rows": [
+            [
+                {
+                    "name": "assignmentDesktopNotifications"
+                },
+                {
+                    "name": "assignmentDesktopNotificationsEntityList"
+                }
+            ],
+            [
+                {
+                    "name": "mentionDesktopNotifications"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "streamDesktopNotifications"
+                },
+                {
+                    "name": "streamDesktopNotificationsEntityList"
+                }
+            ],
+            [
+                {
+                    "name": "portalStreamDesktopNotifications"
+                },
+                {
+                    "name": "streamDesktopNotificationsTypeList"
+                }
+            ],
+            [
+                {
+                    "name": "DesktopNotificationsDelay"
+                },
+                false
+            ]
+        ]
+    }
+]
