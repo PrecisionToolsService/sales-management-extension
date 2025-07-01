@@ -1,4 +1,3 @@
-console.log("admin-sw.js called");
 self.addEventListener("install", function (e) {
     e.waitUntil(
         caches.open("EspoCRM").then(function (cache) {
