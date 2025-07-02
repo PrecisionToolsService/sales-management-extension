@@ -14,7 +14,6 @@ It will ask to enter an extension name and some other information.
 
 After that, you can remove `init.php` file from your repository. Commit changes and proceed to configuration & building.
 
-
 ## Configuration
 
 Create `config.json` file in the root directory. You can copy `config-default.json` and rename it to `config.json`.
@@ -23,13 +22,12 @@ When reading, this config will be merged with `config-default.json`. You can ove
 
 Parameters:
 
-* espocrm.repository - from what repository to fetch EspoCRM;
-* espocrm.branch - what branch to fetch (`stable` is set by default); you can specify version number instead (e.g. `5.9.2`);
-* database - credentials of the dev database;
-* install.siteUrl - site url of the dev instance;
-* install.defaultOwner - a webserver owner (important to be set right);
-* install.defaultGroup - a webserver group (important to be set right).
-
+-   espocrm.repository - from what repository to fetch EspoCRM;
+-   espocrm.branch - what branch to fetch (`stable` is set by default); you can specify version number instead (e.g. `5.9.2`);
+-   database - credentials of the dev database;
+-   install.siteUrl - site url of the dev instance;
+-   install.defaultOwner - a webserver owner (important to be set right);
+-   install.defaultGroup - a webserver group (important to be set right).
 
 ## Config for EspoCRM instance
 
@@ -48,12 +46,12 @@ return [
 
 After building, EspoCRM instance with installed extension will be available at `site` directory. You will be able to access it with credentials:
 
-* Username: admin
-* Password: 1
+-   Username: admin
+-   Password: 1
 
 ### Preparation
 
-1. You need to have *node*, *npm*, *composer* installed.
+1. You need to have _node_, _npm_, _composer_ installed.
 2. Run `npm install`.
 3. Create a database. Note that without the created database instance building will fail. The database name is set in the config file. You can change it.
 
@@ -188,7 +186,6 @@ npm run prepare-test
 
 Fetches the instance and runs composer install. To be used for unit tests and static analysis in CI environment. Takes less time than the full installation.
 
-
 ### Unit
 
 Run composer install for the site:
@@ -200,7 +197,7 @@ Run composer install for the site:
 Command to run unit tests:
 
 ```
-(node build --copy; node build --composer-install; cd site; vendor/bin/phpunit tests/unit/Espo/Modules/Desktop-notification)
+(node build --copy; node build --composer-install; cd site; vendor/bin/phpunit tests/unit/Espo/modules/push-notification)
 ```
 
 or
@@ -236,7 +233,7 @@ return [
 Command to run integration tests:
 
 ```
-(node build --copy; node build --composer-install; cd site; vendor/bin/phpunit tests/integration/Espo/Modules/Desktop-notification)
+(node build --copy; node build --composer-install; cd site; vendor/bin/phpunit tests/integration/Espo/modules/push-notification)
 ```
 
 or
@@ -261,20 +258,20 @@ or
 npm run sa
 ```
 
-If your extension contains additional PHP packages, you also need to add `site/custom/Espo/Modules/Desktop-notification/vendor` to the *scanDirectories* section in *phpstan.neon* config.
+If your extension contains additional PHP packages, you also need to add `site/custom/Espo/modules/push-notification/vendor` to the _scanDirectories_ section in _phpstan.neon_ config.
 
-Note: You can omit *composer-install* command if your extension does not contain PHP packages.
+Note: You can omit _composer-install_ command if your extension does not contain PHP packages.
 
 ## Configuring IDE
 
 You need to set the following paths to be ignored in your IDE:
 
-* `build`
-* `site/build`
-* `site/custom/`
-* `site/client/custom/`
-* `site/tests/unit/Espo/Modules/Desktop-notification`
-* `site/tests/integration/Espo/Modules/Desktop-notification`
+-   `build`
+-   `site/build`
+-   `site/custom/`
+-   `site/client/custom/`
+-   `site/tests/unit/Espo/modules/push-notification`
+-   `site/tests/integration/Espo/modules/push-notification`
 
 ### File watcher
 
@@ -282,9 +279,9 @@ You can set up a file watcher in the IDE to automatically copy and transpile fil
 
 File watcher parameters for PhpStorm:
 
-* Program: `node`
-* Arguments: `build --copy-file --file=$FilePathRelativeToProjectRoot$`
-* Working Directory: `$ProjectFileDir$`
+-   Program: `node`
+-   Arguments: `build --copy-file --file=$FilePathRelativeToProjectRoot$`
+-   Working Directory: `$ProjectFileDir$`
 
 Note: The File Watcher configuration for PhpStorm is included in this reposistory.
 
@@ -294,21 +291,21 @@ The initialization script asks whether you want to use ES6 modules. It's recomme
 
 If you want to switch to ES6 later:
 
-1. Set *bundled* to true in `extension.json`.
-2. Set *bundled* and *jsTranspiled* to true in `src/files/custom/Espo/Modules/Desktop-notification/Resources/module.json`.
-3. Add `src/files/custom/Espo/Modules/Desktop-notification/Resources/metadata/app/client.json`
+1. Set _bundled_ to true in `extension.json`.
+2. Set _bundled_ and _jsTranspiled_ to true in `src/files/custom/Espo/modules/push-notification/Resources/module.json`.
+3. Add `src/files/custom/Espo/modules/push-notification/Resources/metadata/app/client.json`
     ```json
     {
         "scriptList": [
             "__APPEND__",
-            "client/custom/modules/desktop-notification/lib/init.js"
+            "client/custom/modules/push-notification/lib/init.js"
         ]
     }
     ```
 
 ## Javascript frontend libraries
 
-Install *rollup*.
+Install _rollup_.
 
 In `extension.json`, add a command that will bundle the needed library into an AMD module. Example:
 
@@ -320,19 +317,19 @@ In `extension.json`, add a command that will bundle the needed library into an A
 }
 ```
 
-Add the library module path to `src/files/custom/Espo/Modules/Desktop-notification/Resources/metadata/app/jsLibs.json`
+Add the library module path to `src/files/custom/Espo/modules/push-notification/Resources/metadata/app/jsLibs.json`
 
 ```json
 {
     "some-lib": {
-        "path": "client/custom/modules/desktop-notification/lib/some-lib.js"
+        "path": "client/custom/modules/push-notification/lib/some-lib.js"
     }
 }
 ```
 
 When you build, the library module will be automatically included in the needed location.
 
-Note that you may also need to create *rollup.config.js* to set some additional Rollup parameters that are not supported via CLI usage.
+Note that you may also need to create _rollup.config.js_ to set some additional Rollup parameters that are not supported via CLI usage.
 
 ## License
 

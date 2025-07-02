@@ -2,8 +2,8 @@
   "scriptList": [
     "__APPEND__",
     "https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js",
-    "client/custom/modules/desktop-notification/lib/init.js",
-    "client/custom/modules/desktop-notification/lib/module-desktop-notification.js"
+    "client/custom/modules/push-notification/lib/init.js",
+    "client/custom/modules/push-notification/lib/module-push-notification.js"
   ],
   "metaList": [
     "__APPEND__",
@@ -24,11 +24,11 @@
     "__APPEND__",
     {
       "rel": "manifest",
-      "href": "client/custom/modules/desktop-notification/res/admin-manifest.webmanifest"
+      "href": "client/custom/modules/push-notification/res/admin-manifest.webmanifest"
     },
     {
       "rel": "apple-touch-icon",
-      "href": "client/custom/modules/desktop-notification/icon/512x512.png"
+      "href": "client/custom/modules/push-notification/icon/512x512.png"
     }
   ]
 }

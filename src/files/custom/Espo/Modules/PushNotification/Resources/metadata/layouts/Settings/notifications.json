@@ -1,41 +1,41 @@
 [
     "__APPEND__",
     {
-        "label": "desktop Notifications",
+        "label": "Push Notifications",
         "rows": [
             [
                 {
-                    "name": "assignmentDesktopNotifications"
+                    "name": "assignmentPushNotifications"
                 },
                 {
-                    "name": "assignmentDesktopNotificationsEntityList"
+                    "name": "assignmentPushNotificationsEntityList"
                 }
             ],
             [
                 {
-                    "name": "mentionDesktopNotifications"
+                    "name": "mentionPushNotifications"
                 },
                 false
             ],
             [
                 {
-                    "name": "streamDesktopNotifications"
+                    "name": "streamPushNotifications"
                 },
                 {
-                    "name": "streamDesktopNotificationsEntityList"
+                    "name": "streamPushNotificationsEntityList"
                 }
             ],
             [
                 {
-                    "name": "portalStreamDesktopNotifications"
+                    "name": "portalStreamPushNotifications"
                 },
                 {
-                    "name": "streamDesktopNotificationsTypeList"
+                    "name": "streamPushNotificationsTypeList"
                 }
             ],
             [
                 {
-                    "name": "DesktopNotificationsDelay"
+                    "name": "PushNotificationsDelay"
                 },
                 false
             ]

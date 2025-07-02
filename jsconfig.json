@@ -3,7 +3,9 @@
         "paths": {
             "*": ["site/client/src/*"],
             "modules/crm/*": ["site/client/modules/crm/src/*"],
-            "modules/desktop-notification/*": ["src/files/client/custom/modules/desktop-notification/src/*"]
+            "modules/PushNotification/*": [
+                "src/files/client/custom/modules/push-notification/src/*"
+            ]
         },
         "module": "ES6",
         "target": "ES2018"

@@ -1,7 +1,7 @@
 {
-    "module": "Desktop-notification",
-    "name": "desktop-notification",
-    "description": "Extension to implement desktop notification on EspoCRM.",
+    "module": "PushNotification",
+    "name": "PushNotification",
+    "description": "Extension to implement Push Notification on EspoCRM.",
     "author": "Hiro Miyoshi",
     "bundled": true,
     "acceptableVersions": [
