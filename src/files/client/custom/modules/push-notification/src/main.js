@@ -45,6 +45,7 @@ define("push-notification:views/site/navbar", ["views/site/navbar"], function (
         initOneSignal: function () {
             const userName = this.getUser().get("userName");
             const onesignalAppId = this.getConfig().get("onesignalAppId");
+            console.log(onesignalAppId);
             window.OneSignalDeferred = window.OneSignalDeferred || [];
             window.OneSignalDeferred.push(async function (OneSignal) {
                 try {
@@ -56,8 +57,13 @@ define("push-notification:views/site/navbar", ["views/site/navbar"], function (
                         serviceWorkerPath:
                             "client/custom/modules/push-notification/services/onesignal/OneSignalSDKWorker.js",
                     });
-                    OneSignal.login(userName);
+
                     console.log("✅ OneSignal initialized successfully.");
+                    OneSignal.User.addEventListener("change", function (event) {
+                        console.log("change", { event });
+                        console.log(OneSignal.User.onesignalId);
+                    });
+                    await OneSignal.login(userName);
                 } catch (error) {
                     console.error("❌ OneSignal initialization failed:", error);
                 }
