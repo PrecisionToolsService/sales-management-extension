@@ -46,6 +46,9 @@ define("push-notification:views/site/navbar", ["views/site/navbar"], function (
             const userName = this.getUser().get("userName");
             const onesignalAppId = this.getConfig().get("onesignalAppId");
             console.log(onesignalAppId);
+            if (!onesignalAppId) {
+                return;
+            }
             window.OneSignalDeferred = window.OneSignalDeferred || [];
             window.OneSignalDeferred.push(async function (OneSignal) {
                 try {

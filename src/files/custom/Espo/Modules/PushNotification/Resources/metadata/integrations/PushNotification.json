@@ -3,12 +3,14 @@
         "appId": {
             "type": "varchar",
             "maxLength": 64,
-            "required": false
+            "required": true,
+            "tooltip": "pushAppId"
         },
         "apiKey": {
             "type": "varchar",
             "maxLength": 255,
-            "required": true
+            "required": true,
+            "tooltip": "pushApiKey"
         }
     },
     "allowUserAccounts": false,
