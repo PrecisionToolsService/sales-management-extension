@@ -1,0 +1,16 @@
+{
+    "fields": {
+        "appId": {
+            "type": "varchar",
+            "maxLength": 64,
+            "required": false
+        },
+        "apiKey": {
+            "type": "varchar",
+            "maxLength": 255,
+            "required": true
+        }
+    },
+    "allowUserAccounts": false,
+    "view": "push-notification:views/admin/integrations"
+}

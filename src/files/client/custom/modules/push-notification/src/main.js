@@ -51,19 +51,15 @@ define("push-notification:views/site/navbar", ["views/site/navbar"], function (
                 try {
                     await OneSignal.init({
                         appId: onesignalAppId,
+                        notifyButton: { enable: true },
                         serviceWorkerParam: {
-                            scope: "/client/custom/modules/push-notification/services/onesignal",
+                            scope: "/client/custom/modules/push-notification/services/onesignal/",
                         },
                         serviceWorkerPath:
-                            "client/custom/modules/push-notification/services/onesignal/OneSignalSDKWorker.js",
+                            "/client/custom/modules/push-notification/services/onesignal/OneSignalSDKWorker.js",
                     });
-
+                    OneSignal.login(userName);
                     console.log("✅ OneSignal initialized successfully.");
-                    OneSignal.User.addEventListener("change", function (event) {
-                        console.log("change", { event });
-                        console.log(OneSignal.User.onesignalId);
-                    });
-                    await OneSignal.login(userName);
                 } catch (error) {
                     console.error("❌ OneSignal initialization failed:", error);
                 }
