@@ -8,6 +8,7 @@
     "integration-tests": "node build --copy && node build --composer-install && cd site && php vendor/bin/phpunit tests/integration/Espo/Modules/{ModuleName}",
     "copy": "node build --copy",
     "composer-install": "node build --composer-install",
+    "sync": "node build --copy && node build --composer-install",
     "extension": "node build --extension",
     "clear-cache": "php site/clear_cache.php",
     "rebuild": "node build --rebuild",
@@ -17,15 +18,11 @@
   "type": "module",
   "author": "Hiro Miyoshi",
   "dependencies": {
-    "espo-extension-tools": "github:espocrm/extension-tools#0.3.2",
+    "espo-extension-tools": "github:espocrm/extension-tools#0.3.6",
     "fs-extra": "^9.0.0"
   },
   "engines": {
-    "npm": ">=7",
-    "node": ">=15"
-  },
-  "devDependencies": {
-    "grunt": "^1.6.1",
-    "grunt-cli": "^1.5.0"
+    "npm": ">=8",
+    "node": ">=18"
   }
 }
