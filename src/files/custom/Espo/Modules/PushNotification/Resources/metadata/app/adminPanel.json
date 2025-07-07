@@ -1,0 +1,14 @@
+{
+    "system": {
+        "itemList": [
+            "__APPEND__",
+            {
+                "url": "#Admin/push-notifications",
+                "label": "Push Notifications",
+                "iconClass": "fas fa-bell",
+                "description": "pushNotifications",
+                "recordView": "push-notification:views/admin/notifications"
+            }
+        ]
+    }
+}

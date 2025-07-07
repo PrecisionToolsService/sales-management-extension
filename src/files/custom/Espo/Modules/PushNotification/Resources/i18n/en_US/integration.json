@@ -1,0 +1,12 @@
+{
+    "fields": {
+        "appId": "Onesignal App ID",
+        "apiKey": "Onesignal API Key"
+    },
+    "help": {
+        "Outlook": "Obtain OAuth credentials from the [Azure Active Directory admin center](https://aad.portal.azure.com)."
+    },
+    "tooltips": {
+        "pushTenant": "Controls who can sign into the application.\n\n* *common* – Allows users with both personal Microsoft accounts and work/school accounts from Azure AD to sign into the application.\n* *organizations* – Allows only users with work/school accounts from Azure AD to sign into the application.\n* *consumers* – Allows only users with personal Microsoft accounts (MSA) to sign into the application.\n\nNote: If your Azure application is not set as multi-tenant, *common* value will cause an authentication error. You need to use an appropriate value."
+    }
+}

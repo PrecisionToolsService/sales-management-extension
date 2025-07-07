@@ -1,0 +1,18 @@
+{
+    "fields": {
+        "assignmentNotificationsEntityList": "Entities to notify about upon assignment",
+        "assignmentPushNotifications": "Notifications upon assignment",
+        "assignmentPushNotificationsEntityList": "Assignment Push notifications scopes",
+        "streamPushNotifications": "Notifications about updates in Stream for internal users",
+        "portalStreamPushNotifications": "Notifications about updates in Stream for portal users",
+        "streamPushNotificationsEntityList": "Stream Push notifications scopes",
+        "streamPushNotificationsTypeList": "What to notify about",
+        "streamPushWithContentEntityTypeList": "Entities with Push body in stream notes"
+    },
+    "tooltips": {
+        "streamPushNotificationsEntityList": "Push notifications about stream updates of followed records. Users will receive Push notifications only for specified entity types."
+    },
+    "labels": {
+        "Push Notifications": "Push Notifications"
+    }
+}

@@ -1,0 +1,53 @@
+{
+    "skipRebuild": true,
+    "fields": {
+        "assignmentPushNotifications": {
+            "type": "bool",
+            "default": false
+        },
+        "assignmentPushNotificationsEntityList": {
+            "type": "multiEnum",
+            "translation": "Global.scopeNamesPlural",
+            "view": "views/settings/fields/assignment-email-notifications-entity-list"
+        },
+        "assignmentNotificationsEntityList": {
+            "type": "multiEnum",
+            "translation": "Global.scopeNamesPlural",
+            "view": "views/settings/fields/assignment-notifications-entity-list"
+        },
+        "postPushNotifications": {
+            "type": "bool",
+            "default": false
+        },
+        "updatePushNotifications": {
+            "type": "bool",
+            "default": false
+        },
+        "mentionPushNotifications": {
+            "type": "bool",
+            "default": false
+        },
+        "streamPushNotifications": {
+            "type": "bool",
+            "default": false
+        },
+        "portalStreamPushNotifications": {
+            "type": "bool",
+            "default": true
+        },
+        "streamPushNotificationsEntityList": {
+            "type": "multiEnum",
+            "translation": "Global.scopeNamesPlural",
+            "view": "views/settings/fields/stream-email-notifications-entity-list",
+            "tooltip": true
+        },
+        "streamPushNotificationsTypeList": {
+            "type": "multiEnum",
+            "options": ["Post", "Status", "PushReceived"]
+        },
+        "streamPushWithContentEntityTypeList": {
+            "type": "multiEnum",
+            "view": "views/settings/fields/stream-email-with-content-entity-type-list"
+        }
+    }
+}

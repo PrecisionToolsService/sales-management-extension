@@ -5,6 +5,7 @@ namespace Espo\Modules\PushNotification\Hooks\Integration;
 use Espo\ORM\Entity;
 
 use Espo\Entities\Integration;
+use Espo\Core\Utils\Log;
 
 use Espo\Core\Utils\Config\ConfigWriter;
 
@@ -12,7 +13,7 @@ class PushNotification
 {
     private ConfigWriter $configWriter;
 
-    public function __construct(ConfigWriter $configWriter)
+    public function __construct(ConfigWriter $configWriter, private Log $log,)
     {
         $this->configWriter = $configWriter;
     }
@@ -33,7 +34,6 @@ class PushNotification
             $apiKey = null;
             $appId = null;
         }
-
         $this->configWriter->set('onesignalApiKey', $apiKey);
         $this->configWriter->set('onesignalAppId', $appId);
 

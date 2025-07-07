@@ -1,0 +1,38 @@
+[
+    "__APPEND__",
+    {
+        "tabBreak": true,
+        "tabLabel": "$label:Notifications",
+        "name": "notifications",
+        "rows": [
+            [
+                {
+                    "name": "receiveAssignmentPushNotifications"
+                },
+                {
+                    "name": "receiveMentionPushNotifications"
+                }
+            ],
+            [
+                {
+                    "name": "receiveStreamPushNotifications"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "assignmentNotificationsIgnoreEntityTypeList"
+                },
+                {
+                    "name": "assignmentPushNotificationsIgnoreEntityTypeList"
+                }
+            ],
+            [
+                {
+                    "name": "reactionNotifications"
+                },
+                false
+            ]
+        ]
+    }
+]

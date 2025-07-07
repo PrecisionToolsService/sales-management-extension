@@ -1,5 +1,4 @@
 [
-    "__APPEND__",
     {
         "label": "Push Notifications",
         "rows": [
@@ -32,12 +31,6 @@
                 {
                     "name": "streamPushNotificationsTypeList"
                 }
-            ],
-            [
-                {
-                    "name": "PushNotificationsDelay"
-                },
-                false
             ]
         ]
     }
