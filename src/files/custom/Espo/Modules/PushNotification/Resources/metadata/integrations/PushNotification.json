@@ -11,6 +11,11 @@
             "maxLength": 255,
             "required": true,
             "tooltip": "pushApiKey"
+        },
+        "safariId": {
+            "type": "varchar",
+            "maxLength": 64,
+            "required": true
         }
     },
     "allowUserAccounts": false,

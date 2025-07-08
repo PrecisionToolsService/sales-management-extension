@@ -45,23 +45,29 @@ define("push-notification:views/site/navbar", ["views/site/navbar"], function (
         initOneSignal: function () {
             const userName = this.getUser().get("userName");
             const onesignalAppId = this.getConfig().get("onesignalAppId");
+            const safari_web_id = this.getConfig().get("onesignalSafariId");
             console.log(onesignalAppId);
             if (!onesignalAppId) {
                 return;
             }
             window.OneSignalDeferred = window.OneSignalDeferred || [];
             window.OneSignalDeferred.push(async function (OneSignal) {
+                OneSignal.Debug.setLogLevel("trace");
                 try {
                     await OneSignal.init({
                         appId: onesignalAppId,
+                        safari_web_id: safari_web_id,
+                        autoResubscribe: true,
+                        persistNotification: false,
+                        allowLocalhostAsSecureOrigin: true,
                         notifyButton: { enable: true },
                         serviceWorkerParam: {
                             scope: "/client/custom/modules/push-notification/services/onesignal/",
                         },
                         serviceWorkerPath:
-                            "/client/custom/modules/push-notification/services/onesignal/OneSignalSDKWorker.js",
+                            "client/custom/modules/push-notification/services/onesignal/OneSignalSDKWorker.js",
                     });
-                    OneSignal.login(userName);
+                    await OneSignal.login(userName);
                     console.log("✅ OneSignal initialized successfully.");
                 } catch (error) {
                     console.error("❌ OneSignal initialization failed:", error);

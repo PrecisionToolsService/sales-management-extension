@@ -29,13 +29,16 @@ class PushNotification
 
         $apiKey = $entity->get('apiKey');
         $appId = $entity->get('appId');
+        $safariId = $entity->get('safariId');
 
         if (!$entity->isEnabled()) {
             $apiKey = null;
             $appId = null;
+            $safariId = null;
         }
         $this->configWriter->set('onesignalApiKey', $apiKey);
         $this->configWriter->set('onesignalAppId', $appId);
+        $this->configWriter->set('onesignalSafariId', $safariId);
 
         $this->configWriter->save();
     }
