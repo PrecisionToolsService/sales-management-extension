@@ -4,7 +4,6 @@ define("push-notification:views/site/navbar", ["views/site/navbar"], function (
     return Dep.extend({
         setup: function () {
             Dep.prototype.setup.call(this);
-
             this.initPWA();
             this.initOneSignal();
         },
@@ -14,11 +13,6 @@ define("push-notification:views/site/navbar", ["views/site/navbar"], function (
             navigator.serviceWorker
                 .getRegistrations()
                 .then(function (registrations) {
-                    for (let registration of registrations) {
-                        registration.unregister().then((success) => {
-                            console.log("Unregistered:", success);
-                        });
-                    }
                     if ("serviceWorker" in navigator) {
                         navigator.serviceWorker
                             .register(
@@ -46,7 +40,6 @@ define("push-notification:views/site/navbar", ["views/site/navbar"], function (
             const userName = this.getUser().get("userName");
             const onesignalAppId = this.getConfig().get("onesignalAppId");
             const safari_web_id = this.getConfig().get("onesignalSafariId");
-            console.log(onesignalAppId);
             if (!onesignalAppId) {
                 return;
             }
@@ -60,7 +53,18 @@ define("push-notification:views/site/navbar", ["views/site/navbar"], function (
                         autoResubscribe: true,
                         persistNotification: false,
                         allowLocalhostAsSecureOrigin: true,
-                        notifyButton: { enable: true },
+                        notifyButton: { enable: false },
+                        promptOptions: {
+                            slidedown: {
+                                prompts: [
+                                    {
+                                        autoPrompt: true,
+                                        delay: { pageViews: 2 },
+                                        type: "push",
+                                    },
+                                ],
+                            },
+                        },
                         serviceWorkerParam: {
                             scope: "/client/custom/modules/push-notification/services/onesignal/",
                         },

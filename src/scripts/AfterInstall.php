@@ -24,7 +24,8 @@ class AfterInstall
         // 追加したいドメイン
         $requiredDomains = [
             'https://cdn.onesignal.com',
-            'https://onesignal.com'
+            'https://onesignal.com',
+            'https://api.onesignal.com'
         ];
 
 

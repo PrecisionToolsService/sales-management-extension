@@ -2,7 +2,6 @@
   "scriptList": [
     "__APPEND__",
     "https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js",
-    "client/custom/modules/push-notification/lib/init.js",
     "client/custom/modules/push-notification/lib/module-push-notification.js"
   ],
   "metaList": [
