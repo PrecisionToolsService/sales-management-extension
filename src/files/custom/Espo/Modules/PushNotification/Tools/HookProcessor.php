@@ -9,6 +9,7 @@ use Espo\Core\Notification\AssignmentNotificator\Params as AssignmentNotificator
 use Espo\Core\Utils\Metadata;
 use Espo\Core\Utils\Config;
 use Espo\Tools\Stream\Service as StreamService;
+use Espo\Modules\PushNotification\Tools\PushNotificationSender as PushSender;
 use Espo\ORM\EntityManager;
 use Espo\ORM\Entity;
 use Espo\Entities\User;
@@ -16,6 +17,7 @@ use Espo\Core\Utils\Log;
 use Espo\Entities\Notification;
 use Espo\Core\Utils\Language;
 use Espo\Core\ORM\Entity as CoreEntity;
+use Espo\ORM\Repository\Option\SaveOptions;
 
 /**
  * Handles operations with entities.
@@ -33,6 +35,7 @@ class HookProcessor
         private Metadata $metadata,
         private Config $config,
         private Language $language,
+        private PushSender $pushSender,
         private EntityManager $entityManager,
         private StreamService $streamService,
         private Log $log,
@@ -43,7 +46,7 @@ class HookProcessor
     /**
      * @param array<string, mixed> $options
      */
-    public function afterSave(Entity $entity, array $options): void
+    public function afterSave(Entity $entity, SaveOptions $options): void
     {
         $entityType = $entity->getEntityType();
 
@@ -70,77 +73,29 @@ class HookProcessor
             return;
         }
 
-        $notificator = $this->getNotificator($entityType);
-
-        $params = AssignmentNotificatorParams::create()->withRawOptions($options);
 
         // === OneSignal Push通知追加 ===
-    $this->log->warning("Push Notification checkpoint 3");
-    if ($entity->has('assignedUserId')) {
-        $userId = $entity->get('assignedUserId');
-        /** @var \Espo\Core\ORM\Entity\User $user */
-        $user = $this->entityManager->getEntity('User', $userId);
-        
-        $this->log->warning("Push Notification checkpoint 4");
-        if ($user && $user->has('userName')) {
-            $this->log->warning("Push Notification checkpoint 5");
-            $title = 'New Assignment';
-            $message = $this->language->translate($entityType, 'labels') . ' has been assigned to you.';
+        if ($entity->has('assignedUserId')) {
+            $userId = $entity->get('assignedUserId');
+            /** @var \Espo\Core\ORM\Entity\User $user */
+            $user = $this->entityManager->getEntity('User', $userId);
 
-            $this->sendOneSignalPushToExternalId(
-                $user->get('userName'),
-                $title,
-                $message,
-                [
-                    'entityType' => $entityType,
-                    'entityId' => $entity->getId()
-                ]
-            );
-            $this->log->warning("Push Notification checkpoint 6");
+            if ($user && $user->has('userName')) {
+                $title = 'New Assignment';
+                $message = $this->language->translate($entityType, 'labels') . ' has been assigned to you.';
+
+                $this->pushSender->send(
+                    $user->get('userName'),
+                    $title,
+                    $message,
+                    [
+                        'entityType' => $entityType,
+                        'entityId' => $entity->getId()
+                    ]
+                );
+            }
         }
     }
-    }
-
-    private function sendOneSignalPushToExternalId(string $externalId, string $title, string $message, array $data = []): void
-{
-    $appId = $this->config->get('onesignalAppId');
-    $apiKey = $this->config->get('onesignalApiKey');
-
-    if (!$appId || !$apiKey || !$externalId) {
-        $this->log->warning("Missing OneSignal credentials or externalId");
-        return;
-    }
-
-    $payload = [
-        'app_id' => $appId,
-        "include_aliases" => [
-            "external_id" => [
-                $externalId
-            ]
-        ],
-        'headings' => ['en' => $title],
-        "target_channel" => "push",
-        'contents' => ['en' => $message],
-        'data' => $data,
-    ];
-
-    $ch = curl_init('https://onesignal.com/api/v1/notifications');
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        'Authorization: key ' . $apiKey,
-    ]);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-
-    $response = curl_exec($ch);
-    $this->log->warning("response: " . $response);
-    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-    if ($status >= 400) {
-        $this->log->error("OneSignal push failed", ['response' => $response]);
-    }
-}
 
     /**
      * @param array<string, mixed> $options
@@ -179,28 +134,7 @@ class HookProcessor
         }
     }
 
-    public function afterRemove(Entity $entity): void
-    {
-        $query = $this->entityManager
-            ->getQueryBuilder()
-            ->delete()
-            ->from(Notification::ENTITY_TYPE)
-            ->where([
-                'OR' => [
-                    [
-                        'relatedId' => $entity->getId(),
-                        'relatedType' => $entity->getEntityType(),
-                    ],
-                    [
-                        'relatedParentId' => $entity->getId(),
-                        'relatedParentType' => $entity->getEntityType(),
-                    ],
-                ],
-            ])
-            ->build();
 
-        $this->entityManager->getQueryExecutor()->execute($query);
-    }
 
     private function checkHasStream(string $entityType): bool
     {

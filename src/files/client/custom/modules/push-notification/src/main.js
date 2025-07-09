@@ -14,11 +14,6 @@ define("push-notification:views/site/navbar", ["views/site/navbar"], function (
             navigator.serviceWorker
                 .getRegistrations()
                 .then(function (registrations) {
-                    for (let registration of registrations) {
-                        registration.unregister().then((success) => {
-                            console.log("Unregistered:", success);
-                        });
-                    }
                     if ("serviceWorker" in navigator) {
                         navigator.serviceWorker
                             .register(
@@ -46,7 +41,6 @@ define("push-notification:views/site/navbar", ["views/site/navbar"], function (
             const userName = this.getUser().get("userName");
             const onesignalAppId = this.getConfig().get("onesignalAppId");
             const safari_web_id = this.getConfig().get("onesignalSafariId");
-            console.log(onesignalAppId);
             if (!onesignalAppId) {
                 return;
             }

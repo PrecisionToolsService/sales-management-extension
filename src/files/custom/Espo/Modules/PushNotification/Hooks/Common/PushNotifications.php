@@ -2,13 +2,15 @@
 
 namespace Espo\Modules\PushNotification\Hooks\Common;
 
+use Espo\Core\Hook\Hook\AfterSave;
 use Espo\Core\ORM\Repository\Option\SaveOption;
+use Espo\ORM\Repository\Option\SaveOptions;
 use Espo\Modules\PushNotification\Tools\HookProcessor;
 use Espo\Core\Utils\Log;
 use Espo\ORM\Repository\Option\RelateOptions;
 use Espo\ORM\Entity;
 
-class PushNotifications
+class PushNotifications implements AfterSave
 {
     public static int $order = 13;
 
@@ -20,11 +22,11 @@ class PushNotifications
     }
 
     /**
-     * @param array<string, mixed> $options
+     * @param SaveOptions $options
      */
-    public function afterSave(Entity $entity, array $options): void
+    public function afterSave(Entity $entity, SaveOptions $options): void
     {
-        if (!empty($options[SaveOption::SILENT]) || !empty($options[SaveOption::NO_NOTIFICATIONS])) {
+        if ($options->get(SaveOption::SILENT) || $options->get(SaveOption::NO_NOTIFICATIONS)) {
             return;
         }
 
