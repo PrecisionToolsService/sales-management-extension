@@ -7,7 +7,6 @@ use Espo\Core\ORM\Repository\Option\SaveOption;
 use Espo\ORM\Repository\Option\SaveOptions;
 use Espo\Modules\PushNotification\Tools\HookProcessor;
 use Espo\Core\Utils\Log;
-use Espo\ORM\Repository\Option\RelateOptions;
 use Espo\ORM\Entity;
 
 class PushNotifications implements AfterSave

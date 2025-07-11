@@ -3,8 +3,9 @@
 namespace Espo\Modules\PushNotification\Tools;
 
 use Espo\Core\InjectableFactory;
-use Espo\Core\Utils\Config;
 use Espo\Core\Utils\Log;
+use Espo\Core\Exceptions\NotFound;
+use Espo\ORM\EntityManager;
 
 /**
  * A service for email sending. Can send with SMTP parameters of the system email account or with specific parameters.
@@ -13,27 +14,35 @@ use Espo\Core\Utils\Log;
 class PushNotificationSender
 {
     public function __construct(
-        private Config $config,
         private Log $log,
-        private InjectableFactory $injectableFactory
+        private InjectableFactory $injectableFactory,
+        private EntityManager $entityManager
     ) {}
 
     /**
      * Send an email.
      *
      * @throws Exceptions\SendingError
+     * @param string[] $externalIds
      */
-    public function send(string $externalId, string $title, string $message, array $data = []): void
+    public function send(array $externalIds, string $title, string $message, array $data = []): void
     {
-        $this->sendOneSignalPushToExternalId($externalId, $title, $message, $data);
+        $this->sendOneSignalPushToExternalId($externalIds, $title, $message, $data);
     }
 
-    private function sendOneSignalPushToExternalId(string $externalId, string $title, string $message, array $data = []): void
+    /**
+     * @param string[] $externalIds
+     */
+    private function sendOneSignalPushToExternalId(array $externalIds, string $title, string $message, array $data = []): void
     {
-        $appId = $this->config->get('onesignalAppId');
-        $apiKey = $this->config->get('onesignalApiKey');
+        $integration = $this->entityManager->getEntityById('Integration', 'PushNotification');
+        if (!$integration) {
+            throw new NotFound();
+        }
+        $appId = $integration->get('appId');
+        $apiKey = $integration->get('apiKey');
 
-        if (!$appId || !$apiKey || !$externalId) {
+        if (!$appId || !$apiKey || !$externalIds) {
             $this->log->warning("Missing OneSignal credentials or externalId");
             return;
         }
@@ -41,9 +50,7 @@ class PushNotificationSender
         $payload = [
             'app_id' => $appId,
             "include_aliases" => [
-                "external_id" => [
-                    $externalId
-                ]
+                "external_id" => $externalIds,
             ],
             'headings' => ['en' => $title],
             "target_channel" => "push",

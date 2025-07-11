@@ -1,11 +1,15 @@
-define("push-notification:views/site/navbar", ["views/site/navbar"], function (
-    Dep
-) {
+define("push-notification:views/site/navbar", [
+    "views/site/navbar",
+    "model",
+], function (Dep, Model) {
     return Dep.extend({
         setup: function () {
             Dep.prototype.setup.call(this);
+            this.model = new Model();
+            this.model.urlRoot = "Integration";
+            this.model.id = "PushNotification";
             this.initPWA();
-            this.initOneSignal();
+            this.model.fetch().then(() => this.initOneSignal());
         },
 
         // PWA initialization script
@@ -53,7 +57,6 @@ define("push-notification:views/site/navbar", ["views/site/navbar"], function (
                         autoResubscribe: true,
                         persistNotification: false,
                         allowLocalhostAsSecureOrigin: true,
-                        notifyButton: { enable: false },
                         promptOptions: {
                             slidedown: {
                                 prompts: [
