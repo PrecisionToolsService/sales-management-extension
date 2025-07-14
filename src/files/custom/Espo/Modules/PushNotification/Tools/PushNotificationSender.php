@@ -6,6 +6,8 @@ use Espo\Core\InjectableFactory;
 use Espo\Core\Utils\Log;
 use Espo\Core\Exceptions\NotFound;
 use Espo\ORM\EntityManager;
+use Espo\Core\Utils\Config;
+use Espo\ORM\Entity;
 
 /**
  * A service for email sending. Can send with SMTP parameters of the system email account or with specific parameters.
@@ -16,6 +18,7 @@ class PushNotificationSender
     public function __construct(
         private Log $log,
         private InjectableFactory $injectableFactory,
+        private Config $config,
         private EntityManager $entityManager
     ) {}
 
@@ -25,15 +28,15 @@ class PushNotificationSender
      * @throws Exceptions\SendingError
      * @param string[] $externalIds
      */
-    public function send(array $externalIds, string $title, string $message, array $data = []): void
+    public function send(array $externalIds, string $title, string $message, Entity $entity): void
     {
-        $this->sendOneSignalPushToExternalId($externalIds, $title, $message, $data);
+        $this->sendOneSignalPushToExternalId($externalIds, $title, $message, $entity);
     }
 
     /**
      * @param string[] $externalIds
      */
-    private function sendOneSignalPushToExternalId(array $externalIds, string $title, string $message, array $data = []): void
+    private function sendOneSignalPushToExternalId(array $externalIds, string $title, string $message, Entity $entity): void
     {
         $integration = $this->entityManager->getEntityById('Integration', 'PushNotification');
         if (!$integration) {
@@ -47,6 +50,9 @@ class PushNotificationSender
             return;
         }
 
+        $recordUrl = rtrim($this->config->get('siteUrl'), '/') .
+            '/#' . $entity->getEntityType() . '/view/' . $entity->getId();
+
         $payload = [
             'app_id' => $appId,
             "include_aliases" => [
@@ -55,7 +61,7 @@ class PushNotificationSender
             'headings' => ['en' => $title],
             "target_channel" => "push",
             'contents' => ['en' => $message],
-            'data' => $data,
+            'url' => $recordUrl
         ];
 
         $ch = curl_init('https://onesignal.com/api/v1/notifications');

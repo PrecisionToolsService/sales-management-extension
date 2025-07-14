@@ -1,0 +1,10 @@
+{
+    "pushAssignment": {
+        "scopeListConfigParam": "assignmentPushNotificationsEntityList",
+        "module": "PushNotification"
+    },
+    "pushNotePost": {
+        "scope": "Note",
+        "module": "PushNotification"
+    }
+}
