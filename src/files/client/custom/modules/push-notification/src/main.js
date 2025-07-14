@@ -43,7 +43,6 @@ define("push-notification:views/site/navbar", [
         initOneSignal: function () {
             const userName = this.getUser().get("userName");
             const onesignalAppId = this.getConfig().get("onesignalAppId");
-            const safari_web_id = this.getConfig().get("onesignalSafariId");
             if (!onesignalAppId) {
                 return;
             }
@@ -53,7 +52,6 @@ define("push-notification:views/site/navbar", [
                 try {
                     await OneSignal.init({
                         appId: onesignalAppId,
-                        safari_web_id: safari_web_id,
                         autoResubscribe: true,
                         persistNotification: false,
                         allowLocalhostAsSecureOrigin: true,

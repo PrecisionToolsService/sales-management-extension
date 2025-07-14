@@ -3,6 +3,9 @@
         "appId": "Onesignal App ID",
         "apiKey": "Onesignal API Key"
     },
+    "titles": {
+        "PushNotification": "Push Notification"
+    },
     "help": {
         "Outlook": "Obtain OAuth credentials from the [Azure Active Directory admin center](https://aad.portal.azure.com)."
     },

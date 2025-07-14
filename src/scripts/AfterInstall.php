@@ -73,11 +73,9 @@ class AfterInstall
         }
         $appId = $this->config->get('onesignalAppId');
         $apiKey = $this->config->get('onesignalApiKey');
-        $safariId = $this->config->get('onesignalSafariId');
         $entity->setMultiple([
             'appId' => $appId,
             'apiKey' => $apiKey,
-            'safariId' => $safariId,
             'enabled' => !empty($appId),
             'deleted' => false
         ]);

@@ -4,6 +4,7 @@
         "assignmentPushNotifications": "Notifications upon assignment",
         "assignmentPushNotificationsEntityList": "Assignment Push notifications scopes",
         "streamPushNotifications": "Notifications about updates in Stream for internal users",
+        "mentionPushNotifications": "Send push notifications about mentions in posts",
         "portalStreamPushNotifications": "Notifications about updates in Stream for portal users",
         "streamPushNotificationsEntityList": "Stream Push notifications scopes",
         "streamPushNotificationsTypeList": "What to notify about",

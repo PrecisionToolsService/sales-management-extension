@@ -31,16 +31,13 @@ class PushNotification implements AfterSave
 
         $apiKey = $entity->get('apiKey');
         $appId = $entity->get('appId');
-        $safariId = $entity->get('safariId');
 
         if (!$entity->isEnabled()) {
             $this->configWriter->remove('onesignalApiKey');
             $this->configWriter->remove('onesignalAppId');
-            $this->configWriter->remove('onesignalSafariId');
         } else {
             $this->configWriter->set('onesignalApiKey', $apiKey);
             $this->configWriter->set('onesignalAppId', $appId);
-            $this->configWriter->set('onesignalSafariId', $safariId);
         }
 
         // 更新を反映
