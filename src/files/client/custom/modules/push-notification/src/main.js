@@ -1,15 +1,11 @@
-define("push-notification:views/site/navbar", [
-    "views/site/navbar",
-    "model",
-], function (Dep, Model) {
+define("push-notification:views/site/navbar", ["views/site/navbar"], function (
+    Dep
+) {
     return Dep.extend({
         setup: function () {
             Dep.prototype.setup.call(this);
-            this.model = new Model();
-            this.model.urlRoot = "Integration";
-            this.model.id = "PushNotification";
             this.initPWA();
-            this.model.fetch().then(() => this.initOneSignal());
+            this.initOneSignal();
         },
 
         // PWA initialization script
