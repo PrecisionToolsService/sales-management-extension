@@ -1,6 +1,7 @@
 {
     "templates": {
         "pushAssignment": "PushNotification: Assignment",
-        "pushNotePost": "PushNotification: Note about Post"
+        "pushNotePost": "PushNotification: Note about Post",
+        "pushMention": "PushNotification: Mention"
     }
 }

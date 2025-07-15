@@ -6,5 +6,9 @@
     "pushNotePost": {
         "scope": "Note",
         "module": "PushNotification"
+    },
+    "pushMention": {
+        "scope": "Note",
+        "module": "PushNotification"
     }
 }

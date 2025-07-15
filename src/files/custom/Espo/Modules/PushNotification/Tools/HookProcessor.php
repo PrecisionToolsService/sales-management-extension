@@ -51,42 +51,44 @@ class HookProcessor
      */
     public function afterSave(Entity $entity, SaveOptions $options): void
     {
-        $entityType = $entity->getEntityType();
+        $data = [];
+        $users = [];
+        $templateType = "";
 
-        if (!$this->isSupportedEntity($entity)) return;
-        $this->log->info($entityType);
+        if ($entity->getEntityType() !== Note::ENTITY_TYPE) return;
 
         /** @var ?Note $note */
         $note = $entity;
-        $data = [];
         $entityId = $note->getParentId();
         $entityType = $note->getParentType();
         $entity = $this->entityManager->getEntityById($entityType, $entityId);
-        $user = $this->entityManager->getEntityById('User', $note->getCreatedById());
-        $data['userName'] = $user->get('name');
-        $data['name'] = $entity->get(Field::NAME);
-        $data['entityTypeLowerFirst'] = Util::mbLowerCaseFirst($this->language->translateLabel($entityType, 'scopeNames'));
-        $templateType = "";
         switch ($note->getType()) {
             case Note::TYPE_POST:
-                if (!$this->isStreamPushProcess($note)) return;
                 $data['post'] = Markdown::defaultTransform($note->getPost() ?? '');
-                $templateType = "pushNotePost";
+                if ($this->isStreamPushProcess($note)) {
+                    $templateType = "pushNotePost";
+                    $users = $this->getAssignedUsersFromEntity($entity);
+                } elseif ($this->isStreamMentionedPushProcess($note)) {
+                    $templateType = 'pushMention';
+                    $users = $this->getMentionedUsersFromNote($note);
+                } else return;
                 break;
             case Note::TYPE_ASSIGN:
                 if (!$this->isAssignmentProcess($entity)) return;
                 $templateType = "pushAssignment";
+                $users = $this->getAssignedUsersFromNote($note);
                 break;
             default:
                 return;
         }
-
+        $data['userName'] = $this->getUserNameById($note->getCreatedById(), "name");
+        $data['name'] = $entity->get(Field::NAME);
+        $data['entityTypeLowerFirst'] = Util::mbLowerCaseFirst($this->language->translateLabel($entityType, 'scopeNames'));
         $title = $this->getTemplateString($entity, "subject", $templateType, $data);
         $message = $this->getTemplateString($entity, "body", $templateType, $data);
 
         $this->log->info("PushNotification: " . $entity->getEntityType() . ":" . $entity->getId());
         // === OneSignal Push通知追加 ===
-        $users = $this->getAssignedUsers($entity);
         if ($users == []) {
             $this->log->info("PushNotification: No assigned Users");
             return;
@@ -103,16 +105,17 @@ class HookProcessor
     /**
      * @return array<string> UserNameの配列
      */
-    private function getAssignedUsers(CoreEntity $entity): array
+    private function getAssignedUsersFromEntity(CoreEntity $entity): array
     {
-        if ($entity->has('assignedUserId') && $this->isNotSelfAssignment($entity, $entity->get('assignedUserId'))) {
-            $userId = $entity->get('assignedUserId');
-            $user = $this->entityManager->getEntityById('User', $userId);
-            return [$user->get('userName')];
+        $supportMultipleAssignedUsers = $this->metadata->get(['scopes', $entity->getEntityType(), 'assignedUsers']);
+        if (!$supportMultipleAssignedUsers && $this->isNotSelfAssignment($entity, $entity->get('assignedUserId'))) {
+            return [$this->getUserNameById($entity->get('assignedUserId'))];
         }
 
         $userIdList = $entity->getLinkMultipleIdList(Field::ASSIGNED_USERS);
         $fetchedAssignedUserIdList = $entity->getFetched(Field::ASSIGNED_USERS . 'Ids') ?? [];
+        $this->log->info(json_encode($userIdList));
+        $this->log->info(json_encode($fetchedAssignedUserIdList));
 
         $targetUserIdList = [];
 
@@ -121,11 +124,45 @@ class HookProcessor
                 in_array($userId, $fetchedAssignedUserIdList) ||
                 !$this->isNotSelfAssignment($entity, $userId)
             ) {
-                $user = $this->entityManager->getEntityById('User', $userId);
-                $targetUserIdList[] = $user->get('userName');
+                $targetUserIdList[] = $this->getUserNameById($userId);
             }
         }
         return $targetUserIdList;
+    }
+
+    /**
+     * @return array<string> UserNameの配列
+     */
+    private function getAssignedUsersFromNote(Note $note): array
+    {
+        $data = $note->getData();
+
+        if (isset($data->assignedUserId)) {
+            return [$this->getUserNameById($data->assignedUserId)];
+        }
+
+        if (isset($data->addedAssignedUsers)) {
+            $targetUserIdList = [];
+            foreach ($data->addedAssignedUsers as $user) {
+                if ($user->id == $note->getCreatedById()) continue;
+                $targetUserIdList[] = $this->getUserNameById($user->id);
+            }
+            return $targetUserIdList;
+        } else return [];
+    }
+
+    /**
+     * @return array<string> UserNameの配列
+     */
+    private function getMentionedUsersFromNote(Note $note): array
+    {
+        if (isset($note->getData()->mentions)) {
+            $targetUserIdList = [];
+            foreach ($note->getData()->mentions as $mentionedUser) {
+                $targetUserIdList[] = $this->getUserNameById($mentionedUser->id);
+            }
+            return $targetUserIdList;
+        } else return [];
     }
 
     private function isAssignmentProcess(CoreEntity $entity): bool
@@ -144,10 +181,6 @@ class HookProcessor
             $this->log->info("PushNotification: hasAssignedUserField is false");
             return false;
         }
-        // if (!$entity->isAttributeChanged('assignedUserId') && !$entity->isAttributeChanged('assignedUserIds')) {
-        //     $this->log->info("PushNotification: isAttributeChanged is false");
-        //     return false;
-        // }
 
         return in_array(
             $entity->getEntityType(),
@@ -155,31 +188,28 @@ class HookProcessor
         );
     }
 
-    private function isSupportedEntity(Entity $entity): bool
-    {
-        if (!$entity instanceof CoreEntity) {
-            $this->log->info("PushNotification: CoreEntity is false");
-            return false;
-        }
-        if ($entity->getEntityType() !== Note::ENTITY_TYPE) {
-            $this->log->info("PushNotification: Note::ENTITY_TYPE is false");
-            return false;
-        }
-        return true;
-    }
-
-    private function isStreamPushProcess(CoreEntity $entity): bool
+    private function isStreamPushProcess(Note $note): bool
     {
         if (!$this->config->get('streamPushNotifications')) {
             $this->log->info("PushNotification: streamPushNotifications is false");
             return false;
         }
+        if (isset($note->getData()->mentions)) {
+            return false;
+        }
 
-        /** @var ?Note $entity */
         return in_array(
-            $entity->getParentType(),
+            $note->getParentType(),
             $this->config->get('streamPushNotificationsEntityList') ?? []
         );
+    }
+    private function isStreamMentionedPushProcess(Note $note): bool
+    {
+        if (!$this->config->get('mentionPushNotifications')) {
+            $this->log->info("PushNotification: streamPushNotifications is false");
+            return false;
+        }
+        return isset($note->getData()->mentions);
     }
 
     private function isNotSelfAssignment(Entity $entity, string $assignedUserId): bool
@@ -215,5 +245,11 @@ class HookProcessor
             $data,
             true
         );
+    }
+
+    private function getUserNameById(string $userId, string $key = "userName"): string
+    {
+        $user = $this->entityManager->getEntityById('User', $userId);
+        return $user->get($key);
     }
 }

@@ -38,6 +38,7 @@ class PushNotificationSender
      */
     private function sendOneSignalPushToExternalId(array $externalIds, string $title, string $message, Entity $entity): void
     {
+        $this->log->info(json_encode($externalIds));
         $integration = $this->entityManager->getEntityById('Integration', 'PushNotification');
         if (!$integration) {
             throw new NotFound();
