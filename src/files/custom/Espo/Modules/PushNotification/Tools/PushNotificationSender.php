@@ -8,6 +8,8 @@ use Espo\Core\Exceptions\NotFound;
 use Espo\ORM\EntityManager;
 use Espo\Core\Utils\Config;
 use Espo\ORM\Entity;
+use Espo\Entities\User;
+use Espo\Modules\PushNotification\Tools\Utils;
 
 /**
  * A service for email sending. Can send with SMTP parameters of the system email account or with specific parameters.
@@ -19,18 +21,20 @@ class PushNotificationSender
         private Log $log,
         private InjectableFactory $injectableFactory,
         private Config $config,
-        private EntityManager $entityManager
+        private EntityManager $entityManager,
+        private Utils $utils
     ) {}
 
     /**
      * Send an email.
      *
      * @throws Exceptions\SendingError
-     * @param string[] $externalIds
+     * @param string[] $userIds
      */
-    public function send(array $externalIds, string $title, string $message, Entity $entity): void
+    public function send(array $userIds, string $title, string $message, Entity $entity): void
     {
-        $this->sendOneSignalPushToExternalId($externalIds, $title, $message, $entity);
+        $userNames = array_map(fn($userId) => $this->utils->getUserNameById($userId), $userIds);
+        $this->sendOneSignalPushToExternalId($userNames, $title, $message, $entity);
     }
 
     /**
