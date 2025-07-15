@@ -18,6 +18,11 @@
             ],
             [
                 {
+                    "name": "followerStreamPushNotifications"
+                }
+            ],
+            [
+                {
                     "name": "streamPushNotifications"
                 },
                 {

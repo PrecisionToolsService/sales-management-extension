@@ -5,6 +5,7 @@
         "assignmentPushNotificationsEntityList": "Assignment Push notifications scopes",
         "streamPushNotifications": "Notifications about updates in Stream for internal users",
         "mentionPushNotifications": "Send push notifications about mentions in posts",
+        "followerStreamPushNotifications": "Notifications about updates in Stream for followers",
         "streamPushNotificationsEntityList": "Stream Push notifications scopes",
         "streamPushWithContentEntityTypeList": "Entities with Push body in stream notes"
     },

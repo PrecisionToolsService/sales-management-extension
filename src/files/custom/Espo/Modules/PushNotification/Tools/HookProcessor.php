@@ -68,6 +68,8 @@ class HookProcessor
                 if ($this->isStreamPushProcess($note)) {
                     $templateType = "pushNotePost";
                     $users = $this->getAssignedUsersFromEntity($entity);
+                    $followers = $this->getFollowersFromEntity($entity);
+                    $users = array_merge($users, $followers);
                 } elseif ($this->isStreamMentionedPushProcess($note)) {
                     $templateType = 'pushMention';
                     $users = $this->getMentionedUsersFromNote($note);
@@ -103,31 +105,33 @@ class HookProcessor
     }
 
     /**
-     * @return array<string> UserNameの配列
+     * @return array<string> AssignedUsersのUserName配列
      */
     private function getAssignedUsersFromEntity(CoreEntity $entity): array
     {
-        $supportMultipleAssignedUsers = $this->metadata->get(['scopes', $entity->getEntityType(), 'assignedUsers']);
-        if (!$supportMultipleAssignedUsers && $this->isNotSelfAssignment($entity, $entity->get('assignedUserId'))) {
-            return [$this->getUserNameById($entity->get('assignedUserId'))];
+        $isSupportMultipleAssignedUsers = $this->metadata->get(['scopes', $entity->getEntityType(), 'assignedUsers']);
+        if ($isSupportMultipleAssignedUsers) {
+            $assignedUsersIdList = $entity->getLinkMultipleIdList(Field::ASSIGNED_USERS);
+        } else {
+            $assignedUsersIdList = $entity->get('assignedUserId') !== null ? [$entity->get('assignedUserId')] : [];
         }
 
-        $userIdList = $entity->getLinkMultipleIdList(Field::ASSIGNED_USERS);
-        $fetchedAssignedUserIdList = $entity->getFetched(Field::ASSIGNED_USERS . 'Ids') ?? [];
-        $this->log->info(json_encode($userIdList));
-        $this->log->info(json_encode($fetchedAssignedUserIdList));
+        $filteredUserIdList = array_filter($assignedUsersIdList, fn($userId) => $this->isNotSelfAssignment($entity, $userId));
+        return array_map(fn($userId) => $this->getUserNameById($userId), $filteredUserIdList);
+    }
 
-        $targetUserIdList = [];
-
-        foreach ($userIdList as $userId) {
-            if (
-                in_array($userId, $fetchedAssignedUserIdList) ||
-                !$this->isNotSelfAssignment($entity, $userId)
-            ) {
-                $targetUserIdList[] = $this->getUserNameById($userId);
-            }
+    /**
+     * @return array<string> UserNameの配列
+     */
+    private function getFollowersFromEntity(CoreEntity $entity): array
+    {
+        if (!$this->config->get('followerStreamPushNotifications')) {
+            $this->log->info("PushNotification: followerStreamPushNotifications is false");
+            return [];
         }
-        return $targetUserIdList;
+
+        $followersData = $this->streamService->getEntityFollowers($entity);
+        return array_map(fn($userId) => $this->getUserNameById($userId), $followersData['idList']);
     }
 
     /**
@@ -142,13 +146,10 @@ class HookProcessor
         }
 
         if (isset($data->addedAssignedUsers)) {
-            $targetUserIdList = [];
-            foreach ($data->addedAssignedUsers as $user) {
-                if ($user->id == $note->getCreatedById()) continue;
-                $targetUserIdList[] = $this->getUserNameById($user->id);
-            }
-            return $targetUserIdList;
-        } else return [];
+            $filteredUserList = array_filter($data->addedAssignedUsers, fn($user) => $user->id !== $note->getCreatedById());
+            return array_map(fn($user) => $this->getUserNameById($user->id), $filteredUserList);
+        }
+        return [];
     }
 
     /**
@@ -156,13 +157,8 @@ class HookProcessor
      */
     private function getMentionedUsersFromNote(Note $note): array
     {
-        if (isset($note->getData()->mentions)) {
-            $targetUserIdList = [];
-            foreach ($note->getData()->mentions as $mentionedUser) {
-                $targetUserIdList[] = $this->getUserNameById($mentionedUser->id);
-            }
-            return $targetUserIdList;
-        } else return [];
+        if (!isset($note->getData()->mentions)) return [];
+        return array_map(fn($user) => $this->getUserNameById($user->id), $note->getData()->mentions);
     }
 
     private function isAssignmentProcess(CoreEntity $entity): bool
@@ -212,7 +208,7 @@ class HookProcessor
         return isset($note->getData()->mentions);
     }
 
-    private function isNotSelfAssignment(Entity $entity, string $assignedUserId): bool
+    private function isNotSelfAssignment(Entity $entity, ?string $assignedUserId): bool
     {
         return true;
         if ($entity->hasAttribute('createdById') && $entity->hasAttribute('modifiedById')) {
