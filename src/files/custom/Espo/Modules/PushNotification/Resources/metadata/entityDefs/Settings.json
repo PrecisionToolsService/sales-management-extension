@@ -31,19 +31,11 @@
             "type": "bool",
             "default": false
         },
-        "portalStreamPushNotifications": {
-            "type": "bool",
-            "default": true
-        },
         "streamPushNotificationsEntityList": {
             "type": "multiEnum",
             "translation": "Global.scopeNamesPlural",
             "view": "views/settings/fields/stream-email-notifications-entity-list",
             "tooltip": true
-        },
-        "streamPushNotificationsTypeList": {
-            "type": "multiEnum",
-            "options": ["Post", "Status", "PushReceived"]
         },
         "streamPushWithContentEntityTypeList": {
             "type": "multiEnum",

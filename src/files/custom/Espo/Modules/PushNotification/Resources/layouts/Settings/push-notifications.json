@@ -23,14 +23,6 @@
                 {
                     "name": "streamPushNotificationsEntityList"
                 }
-            ],
-            [
-                {
-                    "name": "portalStreamPushNotifications"
-                },
-                {
-                    "name": "streamPushNotificationsTypeList"
-                }
             ]
         ]
     }
