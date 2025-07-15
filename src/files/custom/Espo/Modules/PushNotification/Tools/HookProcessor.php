@@ -10,6 +10,7 @@ use Espo\Core\Htmlizer\Htmlizer;
 use Espo\Core\Htmlizer\HtmlizerFactory as HtmlizerFactory;
 use Espo\Tools\Stream\Service as StreamService;
 use Espo\Entities\Note;
+use Espo\Entities\Team;
 use Espo\Modules\PushNotification\Tools\PushNotificationSender as PushSender;
 use Espo\ORM\EntityManager;
 use Espo\ORM\Entity;
@@ -67,9 +68,7 @@ class HookProcessor
                 $data['post'] = Markdown::defaultTransform($note->getPost() ?? '');
                 if ($this->isStreamPushProcess($note)) {
                     $templateType = "pushNotePost";
-                    $users = $this->getAssignedUsersFromEntity($entity);
-                    $followers = $this->getFollowersFromEntity($entity);
-                    $users = array_merge($users, $followers);
+                    $users =  $this->getFollowersFromEntity($entity);
                 } elseif ($this->isStreamMentionedPushProcess($note)) {
                     $templateType = 'pushMention';
                     $users = $this->getMentionedUsersFromNote($note);
@@ -105,22 +104,6 @@ class HookProcessor
     }
 
     /**
-     * @return array<string> AssignedUsersのUserName配列
-     */
-    private function getAssignedUsersFromEntity(CoreEntity $entity): array
-    {
-        $isSupportMultipleAssignedUsers = $this->metadata->get(['scopes', $entity->getEntityType(), 'assignedUsers']);
-        if ($isSupportMultipleAssignedUsers) {
-            $assignedUsersIdList = $entity->getLinkMultipleIdList(Field::ASSIGNED_USERS);
-        } else {
-            $assignedUsersIdList = $entity->get('assignedUserId') !== null ? [$entity->get('assignedUserId')] : [];
-        }
-
-        $filteredUserIdList = array_filter($assignedUsersIdList, fn($userId) => $this->isNotSelfAssignment($entity, $userId));
-        return array_map(fn($userId) => $this->getUserNameById($userId), $filteredUserIdList);
-    }
-
-    /**
      * @return array<string> UserNameの配列
      */
     private function getFollowersFromEntity(CoreEntity $entity): array
@@ -130,8 +113,8 @@ class HookProcessor
             return [];
         }
 
-        $followersData = $this->streamService->getEntityFollowers($entity);
-        return array_map(fn($userId) => $this->getUserNameById($userId), $followersData['idList']);
+        $followerIdList = $this->streamService->getEntityFollowerIdList($entity);
+        return array_map(fn($userId) => $this->getUserNameById($userId), $followerIdList);
     }
 
     /**
