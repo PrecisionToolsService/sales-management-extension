@@ -5,6 +5,7 @@ namespace Espo\Modules\PushNotification\Tools;
 use Espo\Core\Utils\Metadata;
 use Espo\Core\Utils\Config;
 use Espo\Core\Utils\Log;
+use Espo\ORM\EntityManager;
 use Espo\Core\Utils\TemplateFileManager;
 
 /**
@@ -17,6 +18,7 @@ class Utils
         private Metadata $metadata,
         private Config $config,
         private TemplateFileManager $templateFileManager,
+        private EntityManager $entityManager,
         private Log $log,
     ) {}
 

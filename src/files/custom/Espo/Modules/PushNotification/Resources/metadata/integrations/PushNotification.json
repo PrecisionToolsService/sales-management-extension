@@ -13,6 +13,9 @@
             "tooltip": "pushApiKey"
         }
     },
+    "params": {
+        "onesignalApiBaseUrl": "https://onesignal.com/api/v1"
+    },
     "allowUserAccounts": false,
     "view": "push-notification:views/admin/integrations"
 }

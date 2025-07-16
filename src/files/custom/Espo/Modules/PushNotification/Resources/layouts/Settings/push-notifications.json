@@ -4,26 +4,23 @@
         "rows": [
             [
                 {
-                    "name": "assignmentPushNotifications"
+                    "name": "streamPushNotifications"
                 },
                 {
-                    "name": "assignmentPushNotificationsEntityList"
+                    "name": "teamsStreamPushNotifications"
                 }
-            ],
-            [
-                {
-                    "name": "mentionPushNotifications"
-                },
-                false
             ],
             [
                 {
                     "name": "followerStreamPushNotifications"
+                },
+                {
+                    "name": "mentionPushNotifications"
                 }
             ],
             [
                 {
-                    "name": "streamPushNotifications"
+                    "name": "streamPushNotificationsTypeList"
                 },
                 {
                     "name": "streamPushNotificationsEntityList"

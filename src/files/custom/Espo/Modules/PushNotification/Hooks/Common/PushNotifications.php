@@ -7,6 +7,7 @@ use Espo\Core\ORM\Repository\Option\SaveOption;
 use Espo\ORM\Repository\Option\SaveOptions;
 use Espo\Modules\PushNotification\Tools\HookProcessor;
 use Espo\Core\Utils\Log;
+use Espo\Entities\Note;
 use Espo\ORM\Entity;
 
 class PushNotifications implements AfterSave
@@ -29,30 +30,8 @@ class PushNotifications implements AfterSave
             return;
         }
 
-        $this->processor->afterSave($entity, $options);
-    }
+        if ($entity->getEntityType() !== Note::ENTITY_TYPE) return;
 
-    /**
-     * @param array<string, mixed> $options
-     */
-    public function beforeRemove(Entity $entity, array $options): void
-    {
-        if (!empty($options[SaveOption::SILENT]) || !empty($options[SaveOption::NO_NOTIFICATIONS])) {
-            return;
-        }
-
-        $this->processor->beforeRemove($entity, $options);
-    }
-
-    /**
-     * @param array<string, mixed> $options
-     */
-    public function afterRemove(Entity $entity, array $options): void
-    {
-        if (!empty($options[SaveOption::SILENT])) {
-            return;
-        }
-
-        $this->processor->afterRemove($entity);
+        $this->processor->sendPushNotification($entity);
     }
 }

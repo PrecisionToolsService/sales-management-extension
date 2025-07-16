@@ -8,7 +8,7 @@ use Espo\Core\Exceptions\NotFound;
 use Espo\ORM\EntityManager;
 use Espo\Core\Utils\Config;
 use Espo\ORM\Entity;
-use Espo\Entities\User;
+use Espo\Core\Utils\Metadata;
 use Espo\Modules\PushNotification\Tools\Utils;
 
 /**
@@ -21,6 +21,7 @@ class PushNotificationSender
         private Log $log,
         private InjectableFactory $injectableFactory,
         private Config $config,
+        private Metadata $metadata,
         private EntityManager $entityManager,
         private Utils $utils
     ) {}
@@ -42,7 +43,7 @@ class PushNotificationSender
      */
     private function sendOneSignalPushToExternalId(array $externalIds, string $title, string $message, Entity $entity): void
     {
-        $this->log->info(json_encode($externalIds));
+        $this->log->info("PushNotification: Recipients" . json_encode($externalIds));
         $integration = $this->entityManager->getEntityById('Integration', 'PushNotification');
         if (!$integration) {
             throw new NotFound();
@@ -68,8 +69,8 @@ class PushNotificationSender
             'contents' => ['en' => $message],
             'url' => $recordUrl
         ];
-
-        $ch = curl_init('https://onesignal.com/api/v1/notifications');
+        $baseUrl = $this->metadata->get('integrations.PushNotification.params.onesignalApiBaseUrl');
+        $ch = curl_init($baseUrl . '/notifications');
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
             'Authorization: key ' . $apiKey,
@@ -78,7 +79,7 @@ class PushNotificationSender
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
 
         $response = curl_exec($ch);
-        $this->log->warning("response: " . $response);
+        $this->log->info("response: " . $response);
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
