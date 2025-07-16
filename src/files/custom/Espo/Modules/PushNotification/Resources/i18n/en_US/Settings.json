@@ -3,11 +3,12 @@
         "assignmentNotificationsEntityList": "Entities to notify about upon assignment",
         "assignmentPushNotifications": "Notifications upon assignment",
         "assignmentPushNotificationsEntityList": "Assignment Push notifications scopes",
-        "streamPushNotifications": "Notifications about updates in Stream for internal users",
-        "mentionPushNotifications": "Send push notifications about mentions in posts",
+        "streamPushNotifications": "Notifications about updates in Stream for assigned users",
+        "teamsStreamPushNotifications": "Notifications about updates in Stream for assigned teams members",
+        "mentionPushNotifications": "Notifications about mentions in Stream",
         "followerStreamPushNotifications": "Notifications about updates in Stream for followers",
-        "streamPushNotificationsEntityList": "Stream Push notifications scopes",
-        "streamPushWithContentEntityTypeList": "Entities with Push body in stream notes"
+        "streamPushNotificationsTypeList": "What to notify about",
+        "streamPushNotificationsEntityList": "Stream Push notifications scopes"
     },
     "tooltips": {
         "streamPushNotificationsEntityList": "Push notifications about stream updates of followed records. Users will receive Push notifications only for specified entity types."

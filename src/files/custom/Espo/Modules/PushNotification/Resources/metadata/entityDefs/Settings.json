@@ -8,26 +8,9 @@
         "assignmentPushNotificationsEntityList": {
             "type": "multiEnum",
             "translation": "Global.scopeNamesPlural",
-            "view": "views/settings/fields/assignment-email-notifications-entity-list"
-        },
-        "assignmentNotificationsEntityList": {
-            "type": "multiEnum",
-            "translation": "Global.scopeNamesPlural",
-            "view": "views/settings/fields/assignment-notifications-entity-list"
-        },
-        "postPushNotifications": {
-            "type": "bool",
-            "default": false
-        },
-        "updatePushNotifications": {
-            "type": "bool",
-            "default": false
+            "view": "views/settings/fields/stream-email-notifications-entity-list"
         },
         "mentionPushNotifications": {
-            "type": "bool",
-            "default": false
-        },
-        "streamPushNotifications": {
             "type": "bool",
             "default": false
         },
@@ -35,15 +18,34 @@
             "type": "bool",
             "default": true
         },
+        "streamPushNotifications": {
+            "type": "bool",
+            "default": false
+        },
+        "teamsStreamPushNotifications": {
+            "type": "bool",
+            "default": false
+        },
+        "streamPushNotificationsTypeList": {
+            "type": "multiEnum",
+            "options": [
+                "Post",
+                "Create",
+                "CreateRelated",
+                "Update",
+                "Status",
+                "Assign",
+                "Relate",
+                "Unrelate",
+                "EmailReceived",
+                "EmailSent"
+            ]
+        },
         "streamPushNotificationsEntityList": {
             "type": "multiEnum",
             "translation": "Global.scopeNamesPlural",
             "view": "views/settings/fields/stream-email-notifications-entity-list",
             "tooltip": true
-        },
-        "streamPushWithContentEntityTypeList": {
-            "type": "multiEnum",
-            "view": "views/settings/fields/stream-email-with-content-entity-type-list"
         }
     }
 }

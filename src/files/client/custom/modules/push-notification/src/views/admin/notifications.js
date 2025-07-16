@@ -21,6 +21,32 @@ define("push-notification:views/admin/notifications", [
         };
         setup() {
             super.setup();
+            this.controlStreamPushNotificationsEntityList();
+            this.listenTo(this.model, "change", (model) => {
+                if (
+                    model.hasChanged("streamPushNotifications") ||
+                    model.hasChanged("teamsStreamPushNotifications") ||
+                    model.hasChanged("followerStreamPushNotifications") ||
+                    model.hasChanged("mentionPushNotifications")
+                ) {
+                    this.controlStreamPushNotificationsEntityList();
+                }
+            });
+        }
+
+        controlStreamPushNotificationsEntityList() {
+            if (
+                this.model.get("streamPushNotifications") ||
+                this.model.get("teamsStreamPushNotifications") ||
+                this.model.get("followerStreamPushNotifications") ||
+                this.model.get("mentionPushNotifications")
+            ) {
+                this.showField("streamPushNotificationsEntityList");
+                this.showField("streamPushNotificationsTypeList");
+            } else {
+                this.hideField("streamPushNotificationsEntityList");
+                this.hideField("streamPushNotificationsTypeList");
+            }
         }
     }
     _exports.default = _default;
