@@ -1,0 +1,42 @@
+{
+    "fields": {
+        "accountRole": {
+            "type": "enum",
+            "options": [
+                "",
+                "Editor",
+                "Owner"
+            ],
+            "utility": true,
+            "notStorable": true,
+            "orderDisabled": false,
+            "view": "modules/assignment/views/user/fields/account-role"
+        },
+        "accountRoleId": {
+            "type": "varchar",
+            "utility": true,
+            "notStorable": true,
+            "orderDisabled": true
+        },
+        "accountAssignments": {
+            "type": "linkMultiple",
+            "readOnly": true,
+            "layoutAvailabilityList": [
+                "filters"
+            ],
+            "noLoad": true
+        }
+    },
+    "links": {
+        "accountAssignments": {
+            "type": "hasMany",
+            "entity": "Account",
+            "foreign": "members",
+            "layoutRelationshipsDisabled": true,
+            "columnAttributeMap": {
+                "role": "accountRole",
+                "roleId": "accountRoleId"
+            }
+        }
+    }
+}

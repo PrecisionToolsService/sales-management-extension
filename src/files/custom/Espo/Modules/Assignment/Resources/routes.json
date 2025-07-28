@@ -1,1 +1,7 @@
-[]
+[
+    {
+        "route": "Account/:id/members",
+        "method": "post",
+        "actionClassName": "Espo\\Modules\\Assignment\\Tools\\Account\\Api\\PostMembers"
+    }
+]

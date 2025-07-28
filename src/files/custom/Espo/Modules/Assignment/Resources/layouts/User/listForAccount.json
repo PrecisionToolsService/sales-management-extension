@@ -1,0 +1,15 @@
+[
+    {
+        "name": "name",
+        "link": true
+    },
+    {
+        "name": "accountRole",
+        "width": 28,
+        "notSortable": true
+    },
+    {
+        "name": "emailAddress",
+        "width": 33
+    }
+]

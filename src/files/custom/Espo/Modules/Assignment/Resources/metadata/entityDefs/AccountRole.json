@@ -1,0 +1,149 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "maxLength": 64,
+            "required": true,
+            "audited": true
+        },
+        "taskCreate": {
+            "type": "enum",
+            "options": [
+                "yes",
+                "no"
+            ],
+            "default": "no",
+            "maxLength": 3,
+            "translation": "AccountRole.options.levelList",
+            "view": "modules/assignment/views/account-role/fields/permission",
+            "audited": true
+        },
+        "taskRead": {
+            "type": "enum",
+            "options": [
+                "all",
+                "own"
+            ],
+            "default": "own",
+            "maxLength": 3,
+            "translation": "AccountRole.options.levelList",
+            "view": "modules/assignment/views/account-role/fields/permission",
+            "audited": true
+        },
+        "taskStream": {
+            "type": "enum",
+            "options": [
+                "all",
+                "own"
+            ],
+            "default": "own",
+            "maxLength": 3,
+            "translation": "AccountRole.options.levelList",
+            "view": "modules/assignment/views/account-role/fields/permission",
+            "audited": true
+        },
+        "taskEdit": {
+            "type": "enum",
+            "options": [
+                "all",
+                "assigned",
+                "own"
+            ],
+            "default": "own",
+            "maxLength": 9,
+            "translation": "AccountRole.options.levelList",
+            "view": "modules/assignment/views/account-role/fields/permission",
+            "audited": true
+        },
+        "taskColumnEdit": {
+            "type": "enum",
+            "options": [
+                "all",
+                "assigned",
+                "own"
+            ],
+            "default": "own",
+            "maxLength": 9,
+            "translation": "AccountRole.options.levelList",
+            "view": "modules/assignment/views/account-role/fields/permission",
+            "audited": true
+        },
+        "taskDelete": {
+            "type": "enum",
+            "options": [
+                "all",
+                "own",
+                "no"
+            ],
+            "default": "no",
+            "maxLength": 3,
+            "translation": "AccountRole.options.levelList",
+            "view": "modules/assignment/views/account-role/fields/permission",
+            "audited": true
+        },
+        "taskAssignment": {
+            "type": "enum",
+            "options": [
+                "all",
+                "own"
+            ],
+            "default": "own",
+            "maxLength": 3,
+            "translation": "AccountRole.options.levelList",
+            "view": "modules/assignment/views/account-role/fields/permission",
+            "audited": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true,
+            "fieldManagerParamList": [
+                "useNumericFormat"
+            ]
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true,
+            "fieldManagerParamList": [
+                "useNumericFormat"
+            ]
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user",
+            "fieldManagerParamList": []
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user",
+            "fieldManagerParamList": []
+        }
+    },
+    "links": {
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "name",
+        "order": "asc"
+    },
+    "indexes": {
+        "name": {
+            "columns": [
+                "name"
+            ]
+        },
+        "taskCreate": {
+            "columns": [
+                "taskCreate"
+            ]
+        }
+    }
+}

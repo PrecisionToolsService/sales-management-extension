@@ -1,0 +1,8 @@
+{
+    "rowActionDefs": {
+        "changeAccountRole": {
+            "labelTranslation": "Account.actions.changeRole",
+            "handler": "modules/assignment/handlers/user/change-account-role-row-action"
+        }
+    }
+}

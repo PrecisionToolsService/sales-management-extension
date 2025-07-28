@@ -1,0 +1,10 @@
+{
+    "selectAttributesDependencyMap": {
+        "accountRole": [
+            "accountRoleId"
+        ]
+    },
+    "ordererClassNameMap": {
+        "accountRole": "Espo\\Modules\\Assignment\\Select\\User\\Orderers\\AccountRole"
+    }
+}

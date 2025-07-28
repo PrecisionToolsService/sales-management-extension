@@ -1,0 +1,45 @@
+{
+    "activities": {
+        "disabled": true
+    },
+    "history": {
+        "disabled": true
+    },
+    "_delimiter_": {
+        "disabled": true
+    },
+    "users": {
+        "index": 0
+    },
+    "_tabBreak_0": {
+        "index": 1,
+        "tabBreak": true,
+        "tabLabel": "$Stream"
+    },
+    "stream": {
+        "sticked": false,
+        "index": 2
+    },
+    "_tabBreak_1": {
+        "index": 3,
+        "tabBreak": true,
+        "tabLabel": "$Account"
+    },
+    "contacts": {
+        "index": 4
+    },
+    "opportunities": {
+        "index": 5
+    },
+    "documents": {
+        "index": 6
+    },
+    "_tabBreak_2": {
+        "index": 7,
+        "tabBreak": true,
+        "tabLabel": "$Support"
+    },
+    "cases": {
+        "index": 8
+    }
+}

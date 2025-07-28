@@ -1,0 +1,25 @@
+{
+    "relationshipPanels": {
+        "members": {
+            "selectHandler": "modules/assignment/handlers/account/select-members",
+            "selectDisabled": true,
+            "createDisabled": true,
+            "removeDisabled": true,
+            "editDisabled": true,
+            "actionList": [
+                {
+                    "name": "selectWithRole",
+                    "label": "Select",
+                    "handler": "modules/assignment/handlers/account/select-members-action",
+                    "actionFunction": "select",
+                    "acl": "edit"
+                }
+            ],
+            "rowActionList": [
+                "changeAccountRole"
+            ],
+            "layout": "listForAccount",
+            "orderBy": "accountRole"
+        }
+    }
+}
