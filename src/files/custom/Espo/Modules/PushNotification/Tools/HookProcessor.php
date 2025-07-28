@@ -156,7 +156,8 @@ class HookProcessor
         }
 
         if (isset($data->addedAssignedUsers)) {
-            return array_filter($data->addedAssignedUsers, fn($user) => $user->id !== $note->getCreatedById());
+            $filtered_users = array_filter($data->addedAssignedUsers, fn($user) => $user->id !== $note->getCreatedById());
+            return array_map(fn($user) => $user->id, $filtered_users);
         }
         return [];
     }

@@ -1,4 +1,7 @@
 {
+    "descriptions": {
+        "pushNotifications": "Desktop push notification settings."
+    },
     "templates": {
         "pushAssignment": "PushNotification: Assignment",
         "pushNotePost": "PushNotification: Note about Post",
