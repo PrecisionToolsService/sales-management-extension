@@ -1,0 +1,11 @@
+{
+    "controller": "controllers/record",
+    "massUpdateDisabled": true,
+    "mergeDisabled": true,
+    "massRemoveDisabled": true,
+    "viewSetupHandlers": {
+        "record/edit": [
+            "modules/assignment/handlers/account-role/setup-record-edit"
+        ]
+    }
+}

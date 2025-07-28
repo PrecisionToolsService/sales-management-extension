@@ -1,0 +1,60 @@
+{
+    "fileds": {
+        "members": {
+            "type": "linkMultiple",
+            "notStorable": true,
+            "readOnly": true,
+            "layoutAvailabilityList": [
+                "filters"
+            ],
+            "directUpdateDisabled": true,
+            "directAccessDisabled": true
+        },
+        "memberRole": {
+            "type": "enum",
+            "utility": true,
+            "notStorable": true,
+            "orderDisabled": true,
+            "massUpdateDisabled": true,
+            "customizationDisabled": true,
+            "layoutAvailabilityList": [],
+            "converterClassName": "Espo\\Classes\\FieldConverters\\RelationshipRole",
+            "converterData": {
+                "column": "role",
+                "link": "members",
+                "relationName": "accountUser",
+                "nearKey": "accountId"
+            },
+            "optionsReference": "User.accountRole",
+            "duplicateIgnore": true
+        },
+        "memberRoleData": {
+            "type": "jsonObject",
+            "utility": true,
+            "notStorable": true,
+            "readOnly": true,
+            "duplicateIgnore": true
+        }
+    },
+    "links": {
+        "members": {
+            "type": "hasMany",
+            "entity": "User",
+            "foreign": "accountAssignments",
+            "additionalColumns": {
+                "role": {
+                    "type": "varchar",
+                    "len": 12,
+                    "default": null
+                },
+                "roleId": {
+                    "type": "foreignId",
+                    "default": null
+                }
+            },
+            "columnAttributeMap": {
+                "role": "memberRole"
+            }
+        }
+    }
+}

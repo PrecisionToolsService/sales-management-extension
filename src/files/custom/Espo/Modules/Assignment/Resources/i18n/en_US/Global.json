@@ -1,0 +1,10 @@
+{
+    "scopeNames": {
+        "Account": "Account",
+        "AccountRole": "Account Role"
+    },
+    "scopeNamesPlural": {
+        "Account": "Accounts",
+        "AccountRole": "Account Roles"
+    }
+}

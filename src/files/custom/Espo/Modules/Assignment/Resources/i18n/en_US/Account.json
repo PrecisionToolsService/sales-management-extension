@@ -1,0 +1,22 @@
+{
+    "labels": {
+        "Create Account": "Create Account",
+        "Roles": "Roles",
+        "Select Role": "Select Role",
+        "Settings": "Settings",
+        "Show Completed": "Show Completed",
+        "Clone": "Clone"
+    },
+    "fields": {
+        "account": "Account",
+        "members": "Members",
+        "memberRole": "Member Role"
+    },
+    "links": {
+        "members": "Members",
+        "memberRole": "Member Role"
+    },
+    "actions": {
+        "changeRole": "Change Role"
+    }
+}

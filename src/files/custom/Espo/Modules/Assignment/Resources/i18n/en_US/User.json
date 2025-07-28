@@ -1,0 +1,17 @@
+{
+    "fields": {
+        "accountAssignments": "Accounts",
+        "accountRole": "Account Role",
+        "accountRoleId": "Account Role ID"
+    },
+    "links": {
+        "accountAssignments": "Accounts"
+    },
+    "options": {
+        "accountRole": {
+            "": "Member",
+            "Editor": "Editor",
+            "Owner": "Owner"
+        }
+    }
+}
