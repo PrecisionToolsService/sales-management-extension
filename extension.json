@@ -1,9 +1,9 @@
 {
-    "module": "{@name}",
-    "name": "{@nameLabel}",
-    "description": "{@description}",
-    "author": "{@author}",
-    "bundled": {@bundled},
+    "module": "Assignment",
+    "name": "Assignment",
+    "description": "Add Assign feature including additional fields.",
+    "author": "Hiro Miyoshi",
+    "bundled": true,
     "acceptableVersions": [
         ">=9.1.0"
     ],
