@@ -20,13 +20,14 @@ define("modules/assignment/handlers/user/change-account-role-row-action", [
                     members: [e],
                     role:
                         e.attributes.accountRoleId || e.attributes.accountRole,
-                    onSelect: async (t) => {
+                    onSelect: async (attr) => {
                         Espo.Ui.notify(" ... "),
                             await Espo.Ajax.postRequest(
                                 `Account/${a.id}/members`,
                                 {
                                     ids: [e.id],
-                                    role: t,
+                                    role: attr.role,
+                                    synced: attr.synced,
                                 }
                             ),
                             Espo.Ui.success(this.view.translate("Done")),

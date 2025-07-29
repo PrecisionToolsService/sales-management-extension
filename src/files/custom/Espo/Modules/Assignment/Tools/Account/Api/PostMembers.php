@@ -29,6 +29,7 @@ class PostMembers implements Action
         $id = $request->getRouteParam('id') ?? throw new BadRequest();
         $ids = $request->getParsedBody()->ids ?? null;
         $role = $request->getParsedBody()->role ?? null;
+        $synced = $request->getParsedBody()->synced ?? false;
 
         if (!property_exists($request->getParsedBody(), 'role')) {
             throw new BadRequest("No 'role'");
@@ -59,7 +60,7 @@ class PostMembers implements Action
             throw new Forbidden("No 'edit' access.");
         }
 
-        $this->service->link($account, $ids, $role);
+        $this->service->link($account, $ids, $synced, $role);
 
         return ResponseComposer::json(true);
     }

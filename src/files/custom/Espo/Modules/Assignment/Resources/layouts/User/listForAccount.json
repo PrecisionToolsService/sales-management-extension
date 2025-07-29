@@ -9,6 +9,9 @@
         "notSortable": true
     },
     {
+        "name": "accountSynced"
+    },
+    {
         "name": "emailAddress",
         "width": 33
     }

@@ -28,6 +28,24 @@
             "optionsReference": "User.accountRole",
             "duplicateIgnore": true
         },
+        "memberSynced": {
+            "type": "bool",
+            "utility": true,
+            "notStorable": true,
+            "orderDisabled": true,
+            "massUpdateDisabled": true,
+            "customizationDisabled": true,
+            "layoutAvailabilityList": [],
+            "converterClassName": "Espo\\Classes\\FieldConverters\\RelationshipRole",
+            "converterData": {
+                "column": "synced",
+                "link": "members",
+                "relationName": "accountUser",
+                "nearKey": "accountId"
+            },
+            "optionsReference": "User.accountSynced",
+            "duplicateIgnore": true
+        },
         "memberRoleData": {
             "type": "jsonObject",
             "utility": true,
@@ -50,10 +68,15 @@
                 "roleId": {
                     "type": "foreignId",
                     "default": null
+                },
+                "synced": {
+                    "type": "bool",
+                    "default": false
                 }
             },
             "columnAttributeMap": {
-                "role": "memberRole"
+                "role": "memberRole",
+                "synced": "memberSynced"
             }
         }
     }

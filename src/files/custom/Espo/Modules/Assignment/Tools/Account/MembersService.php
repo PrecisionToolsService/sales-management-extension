@@ -22,7 +22,7 @@ class MembersService
      * @param string[] $userIds
      * @throws Forbidden
      */
-    public function link(Account $account, array $userIds, ?string $role): void
+    public function link(Account $account, array $userIds, bool $synced, ?string $role): void
     {
         $users = $this->getUsers($userIds);
 
@@ -35,6 +35,7 @@ class MembersService
                 $columns = [
                     'role' => $role,
                     'roleId' => null,
+                    'synced' => $synced,
                 ];
 
                 if ($relation->isRelated($user)) {
@@ -55,6 +56,7 @@ class MembersService
             $columns = [
                 'role' => null,
                 'roleId' => $role,
+                'synced' => $synced,
             ];
 
             if ($relation->isRelated($user)) {
