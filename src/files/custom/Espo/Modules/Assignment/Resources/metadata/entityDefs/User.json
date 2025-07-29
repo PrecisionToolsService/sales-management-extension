@@ -18,6 +18,12 @@
             "notStorable": true,
             "orderDisabled": true
         },
+        "accountSynced": {
+            "type": "bool",
+            "utility": true,
+            "notStorable": true,
+            "orderDisabled": true
+        },
         "accountAssignments": {
             "type": "linkMultiple",
             "readOnly": true,
@@ -35,7 +41,8 @@
             "layoutRelationshipsDisabled": true,
             "columnAttributeMap": {
                 "role": "accountRole",
-                "roleId": "accountRoleId"
+                "roleId": "accountRoleId",
+                "synced": "accountSynced"
             }
         }
     }

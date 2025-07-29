@@ -4,8 +4,9 @@ define("modules/assignment/views/account/modals/select-role", [
     "model",
     "views/record/edit-for-modal",
     "views/fields/enum",
+    "views/fields/bool",
     "views/fields/multi-enum",
-], function (e, t, s, a, i, n) {
+], function (e, t, s, a, i, b, n) {
     "use strict";
     function o(e) {
         return e && e.__esModule ? e : { default: e };
@@ -16,6 +17,7 @@ define("modules/assignment/views/account/modals/select-role", [
         (s = o(s)),
         (a = o(a)),
         (i = o(i)),
+        (b = o(b)),
         (n = o(n));
     class r extends t.default {
         templateContent =
@@ -24,7 +26,8 @@ define("modules/assignment/views/account/modals/select-role", [
             super(e),
                 (this.members = e.members),
                 (this.onSelect = e.onSelect),
-                (this.currentRole = e.role);
+                (this.currentRole = e.role),
+                (this.currentSynced = e.synced);
         }
         setup() {
             (this.headerText = this.translate(
@@ -45,6 +48,7 @@ define("modules/assignment/views/account/modals/select-role", [
                 }),
                 (this.model = new s.default({
                     role: this.currentRole || null,
+                    synced: this.currentSynced || false,
                     members: this.members.map((e) => e.attributes.name),
                 }));
             const e = this.getHelper().getAppParam("accountRoles") || [],
@@ -96,6 +100,15 @@ define("modules/assignment/views/account/modals/select-role", [
                                         }),
                                     },
                                 ],
+                                [
+                                    {
+                                        view: new b.default({
+                                            name: "synced",
+                                            labelText: this.translate("synced"),
+                                        }),
+                                    },
+                                    false,
+                                ],
                             ],
                         },
                     ],
@@ -104,7 +117,7 @@ define("modules/assignment/views/account/modals/select-role", [
         }
         actionApply() {
             this.recordView.validate() ||
-                (this.onSelect(this.model.attributes.role), this.close());
+                (this.onSelect(this.model.attributes), this.close());
         }
     }
     e.default = r;

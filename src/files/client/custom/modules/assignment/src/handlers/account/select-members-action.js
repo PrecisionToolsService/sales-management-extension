@@ -44,11 +44,15 @@ define("modules/assignment/handlers/account/select-members-action", [
             this.view.listenToOnce(i, "select", async (e) => {
                 const t = new s.default({
                     members: e,
-                    onSelect: async (t) => {
+                    onSelect: async (attr) => {
                         Espo.Ui.notify(" ... "),
                             await Espo.Ajax.postRequest(
                                 `Account/${this.model.id}/members`,
-                                { ids: e.map((e) => e.attributes.id), role: t }
+                                {
+                                    ids: e.map((e) => e.attributes.id),
+                                    role: attr.role,
+                                    synced: attr.synced,
+                                }
                             ),
                             await this.collection.fetch(),
                             Espo.Ui.success(this.view.translate("Done")),
