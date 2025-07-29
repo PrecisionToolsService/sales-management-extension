@@ -50,16 +50,6 @@ class MemberRoleProvider
             $roleEntity = $this->entityManager->getRDBRepositoryByClass(AccountRole::class)->getById($roleId);
         }
 
-        if (!$roleEntity) {
-            $roleEntity = $this->entityManager->getRDBRepositoryByClass(AccountRole::class)->getNew();
-
-            if ($role === AccountRole::ROLE_OWNER || $role === AccountRole::ROLE_EDITOR) {
-                $roleEntity->populateMaxPermissions();
-            } else {
-                $roleEntity->populateDefaultMemberPermissions();
-            }
-        }
-
         return new MemberRole($role, $roleEntity);
     }
 }

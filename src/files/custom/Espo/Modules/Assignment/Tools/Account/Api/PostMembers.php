@@ -52,8 +52,8 @@ class PostMembers implements Action
         if (!$this->acl->checkScope(Account::ENTITY_TYPE)) {
             throw new Forbidden("No access to Account scope.");
         }
-        
-        /** @var \Espo\Modules\Assignment\Entities\Account $account */
+
+        /** @var \Espo\Modules\Crm\Entities\Account $account */
         $account = $this->entityProvider->getByClass(Account::class, $id);
 
         if (!$this->acl->checkEntityEdit($account)) {
