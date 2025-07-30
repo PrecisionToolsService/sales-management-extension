@@ -4,9 +4,13 @@
         "link": true
     },
     {
-        "name": "accountRole",
-        "width": 28,
-        "notSortable": true
+        "name": "title"
+    },
+    {
+        "name": "teams"
+    },
+    {
+        "name": "accountRole"
     },
     {
         "name": "accountSynced"

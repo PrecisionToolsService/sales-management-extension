@@ -45,8 +45,6 @@ class MembersService
                     'synced' => $synced,
                 ];
 
-                $this->log->warning("AssignmentExtension:" . $relation->isRelated($user));
-
                 if ($relation->isRelated($user)) {
                     $relation->updateColumns($user, $columns);
 

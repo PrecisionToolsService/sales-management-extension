@@ -2,12 +2,10 @@
 
 namespace Espo\Modules\Assignment\Tools\Account\Api;
 
-use \Espo\Core\Controllers\RecordBase;
 use Espo\Core\Api\Action;
 use Espo\Core\Api\Request;
 use Espo\Core\Api\Response;
 use Espo\Core\Api\ResponseComposer;
-use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Record\EntityProvider;
 use Espo\Modules\Crm\Entities\Account;
 use Espo\Entities\User;
@@ -45,20 +43,24 @@ class GetMembers implements Action
         foreach ($entityUsers as $entityUser) {
             /** @var \Espo\Entities\User $user */
             $user = $this->entityManager->getEntityById(User::ENTITY_TYPE, $entityUser->get("userId"));
+            $user->getTeams()->getIdList(); // おまじない
 
             $list[] = [
-                "id" => $user->get("id"),
-                "name" => $user->get("name"),
-                "userName" => $user->get("userName"),
-                "type" => $user->get("type"),
+                "id" => $user->getId(),
+                "name" => $user->getName(),
+                "userName" => $user->getUserName(),
+                "type" => $user->getType(),
+                "title" => $user->getTitle(),
+                "teamsIds" => $user->get("teamsIds"),
+                "teamsNames" => $user->get("teamsNames"),
                 "salutationName" => $user->get("salutationName"),
-                "firstName" => $user->get("firstName"),
-                "lastName" => $user->get("lastName"),
+                "firstName" => $user->getFirstName(),
+                "lastName" => $user->getLastName(),
                 "isActive" => $user->get("isActive"),
                 "accountRole" => $entityUser->get("role"),
                 "accountRoleId" => $entityUser->get("roleId"),
                 "accountSynced" => $entityUser->get("synced"),
-                "middleName" => $user->get("middleName"),
+                "middleName" => $user->getMiddleName(),
                 "createdById" => $user->get("createdById")
             ];
         }
