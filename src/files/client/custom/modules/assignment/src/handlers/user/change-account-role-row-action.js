@@ -17,13 +17,14 @@ define("modules/assignment/handlers/user/change-account-role-row-action", [
                 return void console.error("Account model cannot be obtained.");
             const a = e.collection.parentModel,
                 i = new s.default({
-                    members: [e],
+                    assignedUsers: [e],
                     role:
                         e.attributes.accountRoleId || e.attributes.accountRole,
+                    synced: e.attributes.accountSynced,
                     onSelect: async (attr) => {
                         Espo.Ui.notify(" ... "),
                             await Espo.Ajax.postRequest(
-                                `Account/${a.id}/members`,
+                                `Account/${a.id}/assignedUsers`,
                                 {
                                     ids: [e.id],
                                     role: attr.role,

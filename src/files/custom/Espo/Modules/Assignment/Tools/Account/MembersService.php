@@ -8,6 +8,7 @@ use Espo\Entities\User;
 use Espo\Modules\Crm\Entities\Account;
 use Espo\Modules\Assignment\Entities\AccountRole;
 use Espo\ORM\EntityManager;
+use Espo\Core\Utils\Log;
 
 class MembersService
 {
@@ -15,8 +16,14 @@ class MembersService
         private EntityManager $entityManager,
         private Acl $acl,
         private User $user,
+        private Log $log,
         private MemberRoleProvider $memberRoleProvider,
     ) {}
+
+    public function get(Account $account): ?MemberRole
+    {
+        return $this->memberRoleProvider->get($this->user, $account->getId());
+    }
 
     /**
      * @param string[] $userIds
@@ -28,7 +35,7 @@ class MembersService
 
         $this->checkAccess($users, $account);
 
-        $relation = $this->entityManager->getRelation($account, 'members');
+        $relation = $this->entityManager->getRelation($account, 'assignedUsers');
 
         if ($role === null || in_array($role, [AccountRole::ROLE_OWNER, AccountRole::ROLE_EDITOR])) {
             foreach ($users as $user) {
@@ -37,6 +44,8 @@ class MembersService
                     'roleId' => null,
                     'synced' => $synced,
                 ];
+
+                $this->log->warning("AssignmentExtension:" . $relation->isRelated($user));
 
                 if ($relation->isRelated($user)) {
                     $relation->updateColumns($user, $columns);

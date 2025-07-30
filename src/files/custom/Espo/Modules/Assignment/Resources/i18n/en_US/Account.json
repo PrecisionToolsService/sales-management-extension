@@ -9,11 +9,9 @@
     },
     "fields": {
         "account": "Account",
-        "members": "Members",
         "memberRole": "Member Role"
     },
     "links": {
-        "members": "Members",
         "memberRole": "Member Role"
     },
     "actions": {

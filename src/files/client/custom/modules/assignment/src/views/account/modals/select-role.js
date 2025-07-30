@@ -24,7 +24,7 @@ define("modules/assignment/views/account/modals/select-role", [
             '\n        <div class="record no-side-margin">{{{record}}}</div>\n    ';
         constructor(e) {
             super(e),
-                (this.members = e.members),
+                (this.assignedUsers = e.assignedUsers),
                 (this.onSelect = e.onSelect),
                 (this.currentRole = e.role),
                 (this.currentSynced = e.synced);
@@ -49,7 +49,9 @@ define("modules/assignment/views/account/modals/select-role", [
                 (this.model = new s.default({
                     role: this.currentRole || null,
                     synced: this.currentSynced || false,
-                    members: this.members.map((e) => e.attributes.name),
+                    assignedUsers: this.assignedUsers.map(
+                        (e) => e.attributes.name
+                    ),
                 }));
             const e = this.getHelper().getAppParam("accountRoles") || [],
                 t = ["", ...e.map((e) => e.id), "Editor", "Owner"],
@@ -87,9 +89,9 @@ define("modules/assignment/views/account/modals/select-role", [
                                     },
                                     {
                                         view: new n.default({
-                                            name: "members",
+                                            name: "assignedUsers",
                                             labelText: this.translate(
-                                                "members",
+                                                "assignedUsers",
                                                 "links",
                                                 "Account"
                                             ),

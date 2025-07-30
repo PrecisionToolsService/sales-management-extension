@@ -43,11 +43,11 @@ define("modules/assignment/handlers/account/select-members-action", [
             });
             this.view.listenToOnce(i, "select", async (e) => {
                 const t = new s.default({
-                    members: e,
+                    assignedUsers: e,
                     onSelect: async (attr) => {
                         Espo.Ui.notify(" ... "),
                             await Espo.Ajax.postRequest(
-                                `Account/${this.model.id}/members`,
+                                `Account/${this.model.id}/assignedUsers`,
                                 {
                                     ids: e.map((e) => e.attributes.id),
                                     role: attr.role,
@@ -57,7 +57,7 @@ define("modules/assignment/handlers/account/select-members-action", [
                             await this.collection.fetch(),
                             Espo.Ui.success(this.view.translate("Done")),
                             this.model.trigger("after:relate"),
-                            this.model.trigger("after:relate:members");
+                            this.model.trigger("after:relate:assignedUsers");
                     },
                 });
                 await this.view.assignView("dialog", t), await t.render();

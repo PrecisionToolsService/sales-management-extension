@@ -10,13 +10,13 @@ class AccountRole implements Orderer
 {
     public function apply(SelectBuilder $queryBuilder, Item $item): void
     {
-        if (!$queryBuilder->hasJoinAlias('accountUser')) {
+        if (!$queryBuilder->hasJoinAlias('entityUser')) {
             return;
         }
 
         $queryBuilder
-            ->order('accountUser.role', $item->getOrder())
-            ->order('accountUser.roleId', $item->getOrder())
+            ->order('entityUser.role', $item->getOrder())
+            ->order('entityUser.roleId', $item->getOrder())
             ->order('name', $item->getOrder());
     }
 }

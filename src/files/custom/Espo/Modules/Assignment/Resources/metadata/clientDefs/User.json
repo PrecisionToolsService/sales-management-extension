@@ -1,4 +1,10 @@
 {
+    "additionalLayouts": {
+        "listForAccount": {
+            "type": "list",
+            "isCustom": true
+        }
+    },
     "rowActionDefs": {
         "changeAccountRole": {
             "labelTranslation": "Account.actions.changeRole",

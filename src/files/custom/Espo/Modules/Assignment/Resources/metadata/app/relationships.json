@@ -1,0 +1,5 @@
+{
+    "entityUser": {
+        "converterClassName": "Espo\\Modules\\Assignment\\Core\\Utils\\Database\\Orm\\LinkConverters\\EntityUser"
+    }
+}

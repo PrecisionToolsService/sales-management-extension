@@ -1,8 +1,9 @@
 {
     "fields": {
         "accountAssignments": "Accounts",
-        "accountRole": "Account Role",
-        "accountRoleId": "Account Role ID"
+        "accountRole": "Role",
+        "accountRoleId": "Role ID",
+        "accountSynced": "Synced"
     },
     "links": {
         "accountAssignments": "Accounts"

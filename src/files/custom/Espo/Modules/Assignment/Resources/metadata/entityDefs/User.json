@@ -7,29 +7,23 @@
                 "Editor",
                 "Owner"
             ],
-            "utility": true,
-            "notStorable": true,
-            "orderDisabled": false,
             "view": "modules/assignment/views/user/fields/account-role"
         },
         "accountRoleId": {
-            "type": "varchar",
-            "utility": true,
-            "notStorable": true,
-            "orderDisabled": true
+            "type": "varchar"
         },
         "accountSynced": {
-            "type": "bool",
-            "utility": true,
-            "notStorable": true,
-            "orderDisabled": true
+            "type": "bool"
         },
         "accountAssignments": {
             "type": "linkMultiple",
-            "readOnly": true,
             "layoutAvailabilityList": [
                 "filters"
             ],
+            "columns": {
+                "role": "accountRole",
+                "synced": "accountSynced"
+            },
             "noLoad": true
         }
     },
@@ -37,8 +31,9 @@
         "accountAssignments": {
             "type": "hasMany",
             "entity": "Account",
-            "foreign": "members",
-            "layoutRelationshipsDisabled": true,
+            "foreign": "assignedUsers",
+            "relationName": "entityUser",
+            "layoutRelationshipsDisabled": false,
             "columnAttributeMap": {
                 "role": "accountRole",
                 "roleId": "accountRoleId",

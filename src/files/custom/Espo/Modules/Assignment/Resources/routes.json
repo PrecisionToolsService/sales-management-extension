@@ -1,7 +1,16 @@
 [
     {
-        "route": "Account/:id/members",
+        "route": "Account/:id/assignedUsers",
         "method": "post",
         "actionClassName": "Espo\\Modules\\Assignment\\Tools\\Account\\Api\\PostMembers"
+    },
+    {
+        "route": "Account/:id/assignedUsers",
+        "method": "get",
+        "params": {
+            "action": "listLinked",
+            "id": ":id"
+        },
+        "actionClassName": "Espo\\Modules\\Assignment\\Tools\\Account\\Api\\GetMembers"
     }
 ]

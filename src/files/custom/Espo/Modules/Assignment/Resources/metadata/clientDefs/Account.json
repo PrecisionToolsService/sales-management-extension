@@ -1,6 +1,6 @@
 {
     "relationshipPanels": {
-        "members": {
+        "assignedUsers": {
             "selectHandler": "modules/assignment/handlers/account/select-members",
             "selectDisabled": true,
             "createDisabled": true,

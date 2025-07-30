@@ -32,7 +32,7 @@ class MemberRoleProvider
         $accountUser = $this->entityManager
             ->getRDBRepository(AccountRole::RELATIONSHIP_ACCOUNT_USER)
             ->where([
-                'accountId' => $accountId,
+                'entityId' => $accountId,
                 'userId' => $user->getId(),
             ])
             ->findOne();

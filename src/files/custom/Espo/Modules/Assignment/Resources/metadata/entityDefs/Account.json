@@ -1,63 +1,44 @@
 {
+    "optimisticConcurrencyControl": true,
     "fileds": {
-        "members": {
-            "type": "linkMultiple",
-            "notStorable": true,
-            "readOnly": true,
-            "layoutAvailabilityList": [
-                "filters"
-            ],
-            "directUpdateDisabled": true,
-            "directAccessDisabled": true
-        },
         "memberRole": {
             "type": "enum",
-            "utility": true,
-            "notStorable": true,
-            "orderDisabled": true,
-            "massUpdateDisabled": true,
-            "customizationDisabled": true,
-            "layoutAvailabilityList": [],
             "converterClassName": "Espo\\Classes\\FieldConverters\\RelationshipRole",
             "converterData": {
                 "column": "role",
-                "link": "members",
-                "relationName": "accountUser",
-                "nearKey": "accountId"
+                "link": "assignedUsers",
+                "relationName": "entityUser",
+                "nearKey": "entityId"
             },
-            "optionsReference": "User.accountRole",
-            "duplicateIgnore": true
+            "optionsReference": "User.accountRole"
         },
         "memberSynced": {
             "type": "bool",
-            "utility": true,
-            "notStorable": true,
-            "orderDisabled": true,
-            "massUpdateDisabled": true,
-            "customizationDisabled": true,
-            "layoutAvailabilityList": [],
             "converterClassName": "Espo\\Classes\\FieldConverters\\RelationshipRole",
             "converterData": {
                 "column": "synced",
-                "link": "members",
-                "relationName": "accountUser",
-                "nearKey": "accountId"
-            },
-            "optionsReference": "User.accountSynced",
-            "duplicateIgnore": true
+                "link": "assignedUsers",
+                "relationName": "entityUser",
+                "nearKey": "entityId"
+            }
         },
         "memberRoleData": {
-            "type": "jsonObject",
-            "utility": true,
-            "notStorable": true,
-            "readOnly": true,
-            "duplicateIgnore": true
+            "type": "jsonObject"
+        },
+        "assignedUsers": {
+            "type": "linkMultiple",
+            "view": "views/fields/assigned-users",
+            "maxCount": 10
+        },
+        "assignedUser": {
+            "disabled": true
         }
     },
     "links": {
-        "members": {
+        "assignedUsers": {
             "type": "hasMany",
             "entity": "User",
+            "relationName": "entityUser",
             "foreign": "accountAssignments",
             "additionalColumns": {
                 "role": {
@@ -78,7 +59,10 @@
                 "role": "memberRole",
                 "synced": "memberSynced"
             },
-            "audited": true
+            "layoutRelationshipsDisabled": false
+        },
+        "assignedUser": {
+            "disabled": true
         }
     }
 }
