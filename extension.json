@@ -1,9 +1,9 @@
 {
-    "module": "{@name}",
-    "name": "{@nameLabel}",
-    "description": "{@description}",
-    "author": "{@author}",
-    "bundled": {@bundled},
+    "module": "GroupMention",
+    "name": "Group Mention",
+    "description": "Extension to enable mentions to teams/roles in Posts.",
+    "author": "Hiro Miyoshi",
+    "bundled": true,
     "acceptableVersions": [
         ">=9.1.0"
     ],
