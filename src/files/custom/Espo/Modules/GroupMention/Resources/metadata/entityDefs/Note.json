@@ -1,0 +1,7 @@
+{
+    "fields": {
+        "post": {
+            "view": "group-mention:views/note/fields/post"
+        }
+    }
+}
