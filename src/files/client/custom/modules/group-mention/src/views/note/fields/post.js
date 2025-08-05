@@ -10,6 +10,26 @@ define("group-mention:views/note/fields/post", [
             console.log("afterRenderEdit");
             Dep.prototype.afterRenderEdit.call(this);
         },
+        getMentionType(mention) {
+            if (mention.userName) return "User";
+            if (mention.userPermission) return "Role";
+            else return "Team";
+        },
+        mentionTemplateHelper(mention) {
+            var labelText = '<span class="text-muted" style="display:inline-block; width:40px;"> ' +
+                this.getMentionType(mention) +
+                "</span>";
+            if (this.getMentionType(mention) == "User")
+                labelText += this.getHelper().getAvatarHtml(
+                    mention.id,
+                    "medium",
+                    16,
+                    "avatar-link"
+                )
+
+            labelText += this.getHelper().escapeString(mention.name)
+            return labelText;
+        },
         initMentions() {
             console.log("initMentions");
             const mentionPermissionLevel =
@@ -39,6 +59,35 @@ define("group-mention:views/note/fields/post", [
                 }
                 return url;
             };
+            const buildTeamListUrl = (term) => {
+                let url =
+                    `Team?` +
+                    `${$.param({
+                        q: term,
+                    })}` +
+                    `&orderBy=name` +
+                    `&maxSize=${maxSize}` +
+                    `&select=id,name,userName`;
+                if (mentionPermissionLevel === "team") {
+                    url +=
+                        "&" +
+                        $.param({
+                            boolFilterList: ["onlyMy"],
+                        });
+                }
+                return url;
+            };
+            const buildRoleListUrl = (term) => {
+                let url =
+                    `Role?` +
+                    `${$.param({
+                        q: term,
+                    })}` +
+                    `&orderBy=name` +
+                    `&maxSize=${maxSize}` +
+                    `&select=id,name,userName`;
+                return url;
+            };
 
             // noinspection JSUnresolvedReference
             this.$element.textcomplete(
@@ -52,28 +101,18 @@ define("group-mention:views/note/fields/post", [
                                 callback([]);
                                 return;
                             }
-                            Espo.Ajax.getRequest(buildUserListUrl(term)).then(
-                                (data) => callback(data.list)
-                            );
+                            Promise.all([
+                                Espo.Ajax.getRequest(buildUserListUrl(term)),
+                                Espo.Ajax.getRequest(buildTeamListUrl(term)),
+                                Espo.Ajax.getRequest(buildRoleListUrl(term))
+                            ]).then(([userData, teamData, roleData]) => {
+                                const combinedList = [...userData.list, ...teamData.list, ...roleData.list];
+                                callback(combinedList);
+                            });
                         },
-                        template: (mention) => {
-                            return (
-                                this.getHelper().getAvatarHtml(
-                                    mention.id,
-                                    "medium",
-                                    16,
-                                    "avatar-link"
-                                ) +
-                                this.getHelper().escapeString(mention.name) +
-                                ' <span class="text-muted">@' +
-                                this.getHelper().escapeString(
-                                    mention.userName
-                                ) +
-                                "</span>"
-                            );
-                        },
+                        template: (mention) => this.mentionTemplateHelper(mention),
                         replace: (o) => {
-                            return "$1@" + o.userName + "";
+                            return `[$1@${o.name}](#${this.getMentionType(o)}/view/${o.id}) `;
                         },
                     },
                 ],
