@@ -112,8 +112,7 @@ define("group-mention:views/note/fields/post", [
                         },
                         template: (mention) => this.mentionTemplateHelper(mention),
                         replace: (o) => {
-                            if (this.getMentionType(o) == "User") return `$1@${o.name} `;
-                            else return `[${o.name}](#${this.getMentionType(o)}/view/${o.id}) `;
+                            return "$1@" + o.userName + "";
                         },
                     },
                 ],
