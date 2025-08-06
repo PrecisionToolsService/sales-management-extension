@@ -170,7 +170,13 @@ class HookProcessor
         if (!$this->config->get('mentionPushNotifications')) return [];
         if (!isset($note->getData()->mentions)) return [];
         $mentions = (array) $note->getData()->mentions;
-        return array_map(fn($user) => $user->id, array_values($mentions));
+        $mentionedUsers = [];
+        foreach ($mentions as $mention) {
+            if ($mention->type == User::ENTITY_TYPE) {
+                $mentionedUsers[] = $mention->id;
+            }
+        }
+        return $mentionedUsers;
     }
 
     private function getTemplateType(Note $note): ?string
