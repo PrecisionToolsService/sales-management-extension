@@ -10,7 +10,7 @@ use Espo\Core\AclManager;
 use Espo\ORM\EntityManager;
 use Espo\Entities\User;
 use Espo\Entities\Note;
-use Espo\Tools\Notification\Service;
+use Espo\Modules\GroupMention\Tools\Notification\Service;
 use Espo\Core\Utils\Log;
 
 use stdClass;
@@ -60,17 +60,18 @@ class GroupMentions
 
         preg_match_all('/\[(.+?)\]\(#(\w+)\/view\/([\w-]+)\)/', $note->getPost() ?? '', $matches);
 
-        if (!empty($matches[0]) && is_array($matches[0])) {
-            $MentionItems = $this->normalizeMatches($matches);
-            $mentionData = $this->processMentions($MentionItems, $note, $previousMentionList);
+        if (empty($matches[0]) || !is_array($matches[0])) {
+            return;
         }
+        $MentionItems = $this->normalizeMatches($matches);
+        $mentionData = $this->processMentions($MentionItems, $note, $previousMentionList);
 
         $data = $note->getData();
 
         if (!$mentionData) {
             return;
         }
-        if (!$data->mentions) {
+        if (!isset($data->mentions)) {
             $data->mentions =  $mentionData;
         } else {
             $data->mentions = array_merge((array) $data->mentions, (array)  $mentionData);
@@ -115,19 +116,18 @@ class GroupMentions
 
         foreach ($mentionItems as $item) {
             $mentionName = "@" . $item->name;
-            $entityName = $item->name;
-            $entityType = $item->type;
-            $entityId = $item->id;
+            $entity = $this->entityManager->getEntityById($item->type, $item->id);
 
             $mentionData->$mentionName = (object) [
-                'id' => $entityId,
-                'name' => $entityName,
-                '_scope' => $entityType,
+                'id' => $entity->getId(),
+                'name' => $entity->get('name'),
+                '_scope' => $entity->getEntityType(),
             ];
 
             if (in_array($item, $previousMentionList)) {
                 continue;
             }
+            $this->service->notifyAboutMentionInPost($entity, $note);
         }
 
         return $mentionData;
