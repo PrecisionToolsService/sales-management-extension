@@ -1,13 +1,12 @@
 <?php
 
-namespace Espo\Modules\PushNotification\Hooks\Common;
+namespace Espo\Modules\PushNotification\Hooks\Note;
 
 use Espo\Core\Hook\Hook\AfterSave;
 use Espo\Core\ORM\Repository\Option\SaveOption;
 use Espo\ORM\Repository\Option\SaveOptions;
 use Espo\Modules\PushNotification\Tools\HookProcessor;
 use Espo\Core\Utils\Log;
-use Espo\Entities\Note;
 use Espo\ORM\Entity;
 
 class PushNotifications implements AfterSave
@@ -29,8 +28,6 @@ class PushNotifications implements AfterSave
         if ($options->get(SaveOption::SILENT) || $options->get(SaveOption::NO_NOTIFICATIONS)) {
             return;
         }
-
-        if ($entity->getEntityType() !== Note::ENTITY_TYPE) return;
 
         $this->processor->sendPushNotification($entity);
     }
